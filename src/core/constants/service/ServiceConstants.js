@@ -1,6 +1,6 @@
 module.exports ={
     HOMEPAGE: '/',
     LOGIN: '/login',
-    SIGNUP: '/signUp',
+    SIGNUP: '/signup',
     BASEURL: 'http://localhost:9000',
 }

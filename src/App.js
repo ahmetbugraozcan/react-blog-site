@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import logo from "./logo.svg";
 import "./App.css";
 import AuthService from "./services/AuthService";
+import Signup from "./screens/signup";
 
 class App extends Component {
     constructor(props) {
@@ -12,19 +13,30 @@ class App extends Component {
 
     render() {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                    <button onClick={()=>{
-                        AuthService.callAPI('/').then((res)=>{
-                            console.log(res);
-                            this.setState({apiResponse: res});
-                        });
-                        }}>Login Page</button>
-                </header>
-                <p className="App-intro">{this.state.apiResponse}</p>
-            </div>
+            <Signup/>
+            // <Router>
+            //     <div className="content">
+            //         <Switch>
+
+            //             <Route exact path="/">
+            //                 <Home />
+            //             </Route>
+
+            //             <Route path="/create">
+            //                 <Create />
+            //             </Route>
+
+            //             <Route path="/blogs/:id">
+            //                 <BlogDetails />
+            //             </Route>
+
+            //             <Route path="*">
+            //                 <NotFound />
+            //             </Route>
+                        
+            //         </Switch>
+            //     </div>
+            // </Router>
         );
     }
 }

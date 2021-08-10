@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import logo from "./logo.svg";
 import "./App.css";
 import AuthService from "./services/AuthService";
-import Signup from "./screens/signup";
+import Login from "./screens/login";
 
 class App extends Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class App extends Component {
 
     render() {
         return (
-            <Signup/>
+            <Login/>
             // <Router>
             //     <div className="content">
             //         <Switch>

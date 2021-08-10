@@ -1,13 +1,56 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+* {
+    margin: 0;
+    font-family: "Quicksand";
+    color: #333;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input, label {
+    display:block;
+}
+
+.login-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    background-size: 'cover';
+    background-image: url('./assets/images/loginbackground.jpg');
+}
+/*responsive olsun*/
+.login-container {
+    border-radius: 1.75%;
+    display: flex;
+    flex-direction: column;
+    padding: 1%; 
+    width: 30%;
+    height: 80%;
+    background-color: white;
+    align-items: center;
+}
+
+.login-container-header{
+    margin-top: 5%;
+}
+
+.login-input-container{
+    width: 65%;
+    height: 10%;
+    margin-top: 12%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.login-label{
+    font-weight: 600;
+}
+
+.login-input{
+    color: rebeccapurple;
 }

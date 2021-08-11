@@ -1,56 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 * {
-    margin: 0;
-    font-family: "Quicksand";
-    color: #333;
+  margin: 0;
+  font-family: "Quicksand";
+  color: #333;
 }
 
-input, label {
-    display:block;
+input,
+label {
+  display: block;
 }
 
 .login-background {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100%;
-    width: 100%;
-    background-size: 'cover';
-    background-image: url('./assets/images/loginbackground.jpg');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  background-size: "cover";
+  background-image: url("./assets/images/loginbackground.jpg");
 }
 /*responsive olsun*/
 .login-container {
-    border-radius: 1.75%;
-    display: flex;
-    flex-direction: column;
-    padding: 1%; 
-    width: 30%;
-    height: 80%;
-    background-color: white;
-    align-items: center;
+  border-radius: 1.75%;
+  display: flex;
+  flex-direction: column;
+  padding: 1%;
+  width: 28%;
+  height: 90%;
+  background-color: white;
+  align-items: center;
 }
 
-.login-container-header{
-    margin-top: 5%;
+.login-container-header {
+  margin-top: 5%;
 }
 
-.login-input-container{
-    width: 65%;
-    height: 10%;
-    margin-top: 12%;
-    display: flex;
-    flex-direction: column;
+.login-input-container {
+  width: 65%;
+  margin-top: 12%;
+  display: flex;
+  flex-direction: column;
 }
 
-
-.login-label{
-    font-weight: 600;
+.login-label {
+  font-weight: 600;
 }
 
-.login-input{
-    color: rebeccapurple;
+.login-input {
+  color: rebeccapurple;
+}
+
+.login-with-others-paragraph {
+  align-self: center;
+  margin-top: 20px;
+}
+
+.social-media-login-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.facebook-button,
+.gmail-button {
+  margin-bottom: 20px !important;
+  width: 100%;
+}
+
+.facebook-button {
+  background-color: blue !important;
+}
+
+.gmail-button {
+  background-color: wheat !important;
 }

@@ -4,13 +4,12 @@
     font-family: "Quicksand";
     color: #333;
 }
-input,
-label {
-  display: block;
+
+input, label {
+    display: block;
 }
 
-
-.login-background {
+.signup-background, .login-background {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,15 +19,19 @@ label {
     background-position: center;
     height: 100%;
     width: 100%;
+    min-height: 100%;
+    min-width: 100%;
     background-size: "cover";
     background-image: url("./assets/images/loginbackground.jpg");
 }
+
 /*responsive olsun*/
-.login-container {
+
+.signup-container, .login-container {
     border-radius: 1.75%;
     display: flex;
     flex-direction: column;
-    padding: 1%; 
+    padding: 1%;
     width: 28%;
     height: 90%;
     min-height: 600px;
@@ -37,73 +40,180 @@ label {
     align-items: center;
 }
 
+.signup-container-header {
+    margin-top: 5%;
+    font-weight: 700;
+}
+
 .login-container-header {
     margin-top: 10%;
     font-weight: 700;
 }
 
-.login-input-container {
+.signup-input-container, .login-input-container {
     width: 65%;
     margin-top: 10%;
     display: flex;
     flex-direction: column;
 }
-  
-  .login-with-others-paragraph {
+
+.signup-with-others-paragraph, .login-with-others-paragraph {
     align-self: center;
     margin-top: 7%;
     margin-bottom: 7%;
-  }
-  
-  .social-media-login-container {
+}
+
+.social-media-signup-container, .login-media-signup-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-  
+}
 
-  .facebook-button,
-  .gmail-button {
+.facebook-button, .gmail-button {
     border-radius: 24px !important;
     height: 50px;
     margin-bottom: 5% !important;
     width: 100%;
     justify-content: start !important;
-  }
-  
-  .facebook-button {
+}
+
+.facebook-button {
     background-color: #4267B2 !important;
-  }
-  
-  .login-button {
-      border-radius: 24px !important;
-      height: 50px !important;
-      margin-top: 7% !important;
-      background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%) !important;
-  }
+}
 
-  .gmail-button {
+.signup-button, .login-button {
+    border-radius: 24px !important;
+    height: 50px !important;
+    margin-top: 7% !important;
+    background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%) !important;
+}
+
+.gmail-button {
     background-color: #DB4437 !important;
-  }
-  
-  .social-media-button-text{
-      padding-left: 10%;
-      color: white !important;
-      font-weight: 600;
-  }
+}
 
-  .login-button-text{
+.social-media-button-text {
+    padding-left: 10%;
     color: white !important;
     font-weight: 600;
-  }
+}
 
-  .single-input-container{
-      margin-top: 12px;
-      width: 100%;
-  }
+.signup-button-text, .login-button-text {
+    color: white !important;
+    font-weight: 600;
+}
 
-  .input-field{
-      width: 100%;
-  }
-  
+.single-input-container {
+    margin-top: 6px;
+    width: 100%;
+}
+
+.input-field {
+    width: 100%;
+}
+
+.text-link {
+    text-decoration: none;
+}
+
+.modal {
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+/* The Close Button */
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    min-height: 30px;
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.modal-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 16px;
+}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.header-with-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

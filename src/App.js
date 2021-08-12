@@ -3,40 +3,27 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import logo from "./logo.svg";
 import "./App.css";
 import AuthService from "./services/AuthService";
-import Login from "./screens/login";
+import Signup from "./screens/Signup";
+import Login from "./screens/Login";
+import HomePage from "./screens/HomePage";
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { apiResponse: "" };
-    }
 
     render() {
         return (
-            <Login/>
-            // <Router>
-            //     <div className="content">
-            //         <Switch>
-
-            //             <Route exact path="/">
-            //                 <Home />
-            //             </Route>
-
-            //             <Route path="/create">
-            //                 <Create />
-            //             </Route>
-
-            //             <Route path="/blogs/:id">
-            //                 <BlogDetails />
-            //             </Route>
-
-            //             <Route path="*">
-            //                 <NotFound />
-            //             </Route>
-                        
-            //         </Switch>
-            //     </div>
-            // </Router>
+            <Router>
+                <Switch>
+                <Route exact path="/">
+                        <HomePage />
+                    </Route>
+                    <Route path="/signup">
+                        <Signup />
+                    </Route>
+                    <Route path="/login">
+                        <Login />
+                    </Route>
+                </Switch>
+            </Router>
         );
     }
 }

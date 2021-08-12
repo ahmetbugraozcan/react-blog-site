@@ -1,139 +1,115 @@
-import { InputAdornment, Button, Input } from '@material-ui/core';
+import { InputAdornment, Button, Input, TextField } from '@material-ui/core';
 import { PersonOutline, LockOutlined, MailOutline, FaceOutlined } from '@material-ui/icons';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from "@material-ui/core/styles";
 import AuthService from "../services/AuthService";
+import { Link } from 'react-router-dom';
+import React from 'react';
+
+class Login extends React.Component {
+
+    state = { password: '', email: '', };
 
 
+    validateForms(event) {
+        event.preventDefault();
 
-function myFunction(event) {
-  event.preventDefault();
-  const fakeData ={ name: 'ahmet', userName: 'ahmetbugra', email: 'gmail', password: 'password' };
+        const body = { email: this.state.email, password: this.state.password};
 
+         AuthService.login(body).then((res) => {
+          if(res){
+            console.log("VALUE: ", res)
+          }else{
+              console.log("GİRİŞ YAPILAMADI")
+          }
+         });
+    }
+    render() {
 
-  const body =  { name: event.target.name.value, userName: event.target.userName.value, email: event.target.email.value, password: event.target.password.value };
+        return (<div className='login-background'>
+            <div className='login-container'>
+                <h1 className='login-container-header'>Giriş Yap</h1>
+                <form className='login-input-container' onSubmit={(event) => { this.validateForms(event) }}>
+                    {/* <div className="single-input-container">
+                        <label htmlFor='email'>E-Posta</label>
+                        <Input 
+                        error={this.state.email === ""}
+                        errorText={"Errr"}
+                        helperText={this.state.email === "" ? 'Empty!' : ' '}
+                        onChange={event => this.setState({ email: event.target.value })}
+                        className='input-field' name='email' placeholder='E-Postanızı Giriniz' startAdornment={<InputAdornment position="start">
+                            <MailOutline />
+                        </InputAdornment>} >
+                        </Input>
+                    </div> */}
+                   <div className="single-input-container">
+                   <TextField
+                        error={this.state.email === ""}
+                        helperText={this.state.email === "" ? 'Lütfen geçerli bir email giriniz.' : ' '}
+                        onChange={event => this.setState({ email: event.target.value })}
+                        className="single-input-container"
+                        placeholder="E-posta"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <MailOutline />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                   </div>
+                    <div className="single-input-container">
+                        <TextField
+                            error={this.state.password === ""}
+                            helperText={this.state.password === "" ? 'Lütfen geçerli bir şifre giriniz.' : ' '}
+                            onChange={event => this.setState({ password: event.target.value })}
+                            className="single-input-container"
+                            placeholder="Şifre"
+                            type='password'
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <LockOutlined />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </div>
 
-  //400 alıyoruz bakalım buna
-  AuthService.signUp(body).then((value)=> {
-   console.log("VALUE: " , value)
-  });
-  
+                    <Button
+                        type='submit'
+                        variant='contained'
+                        className='login-button'
+                    ><div className='login-button-text'>Giriş Yap</div>
+                    </Button>
+                    <p className='login-with-others-paragraph' >Veya</p>
+                    <div className='social-media-login-container'>
+                        <Button
+                            startIcon={<FaGoogle style={{ marginLeft: '10px' }} />}
+                            variant='contained'
+                            className='gmail-button'>
+                            <div className='social-media-button-text'>Gmail ile giriş yap</div>
+                        </Button>
+                        <Button
+                            startIcon={<FaFacebookF color="#FFFFFF" style={{ marginLeft: '10px' }} />}
+                            variant='contained'
+                            className='facebook-button'>
+                            <div className='social-media-button-text'>Facebook ile giriş yap</div>
+                        </Button>
+                    </div>
+                </form>
+                <div style={{ marginTop: '5%' }}>Hesabın yok mu?</div>
+                <div style={{ marginTop: '3%' }}><Link to='signup' className='text-link'><b>Hemen Kaydol</b></Link></div>
+            </div>
+        </div>
+        );
 
-
+    }
 }
 
-const Login = () => {
-  return (
-    <div className='login-background'>
-      <div className='login-container'>
-        <h1 className='login-container-header'>Giriş Yap</h1>
-        <form className='login-input-container' onSubmit={(event) => { myFunction(event) }}>
-          <div className="single-input-container">
-            <label htmlFor='name'>Ad-Soyad</label>
-            <Input className='input-field' name='name' placeholder='İsminizi Giriniz.' startAdornment={<InputAdornment position="start">
-              <FaceOutlined />
-            </InputAdornment>} >
-            </Input>
-          </div>
-          <div className="single-input-container">
-            <label htmlFor='userName'>Kullanıcı Adı</label>
-            <Input className='input-field' name='userName' placeholder='Kullanıcı Adınızı Giriniz.' startAdornment={<InputAdornment position="start">
-              <PersonOutline />
-            </InputAdornment>} >
-            </Input>
-          </div>
-          <div className="single-input-container">
-            <label htmlFor='email'>E-Posta</label>
-            <Input className='input-field' name='email' placeholder='E-Postanızı Giriniz.' startAdornment={<InputAdornment position="start">
-              <MailOutline />
-            </InputAdornment>} >
-            </Input>
-          </div>
-          <div className="single-input-container">
-            <label htmlFor='password'>Şifre</label>
-            <Input className='input-field' name='password' placeholder='Şifre Giriniz.' startAdornment={<InputAdornment position="start">
-              <LockOutlined />
-            </InputAdornment>} >
-            </Input>
-          </div>
-
-          {/* <TextField
-            className='input-field'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PersonOutline />
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{ shrink: true }}
-              label='Kullanıcı Adı'
-              placeholder='Kullanıcı Adınızı Giriniz'
-            > <input type='text' name='username' /></TextField>
-          </label>
-          <label>
-            <TextField
-            className='input-field'
-              style={{ marginTop: '20px' }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MailOutline />
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{ shrink: true }}
-              label='E-Posta'
-              placeholder='E-Postanızı giriniz'
-            ><input type='text' name='email' /></TextField>
-          </label>
-          <label>
-            <TextField
-            className='input-field'
-              style={{ marginTop: '20px' }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LockOutlined />
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{ shrink: true }}
-              label='Şifre'
-              placeholder='Şifrenizi Giriniz'
-            >
-              <input type='text' name='password' />
-            </TextField> */}
-
-          <Button
-            type='submit'
-            variant='contained'
-            className='login-button'
-          ><div className='login-button-text'>Giriş yap</div>
-          </Button>
-          <p className='login-with-others-paragraph' >Veya</p>
-          <div className='social-media-login-container'>
-            <Button
-              startIcon={<FaGoogle style={{ marginLeft: '10px' }} />}
-              variant='contained'
-              className='gmail-button'>
-              <div className='social-media-button-text'>Gmail ile giriş yap</div>
-            </Button>
-            <Button
-              startIcon={<FaFacebookF color="#FFFFFF" style={{ marginLeft: '10px' }} />}
-              variant='contained'
-              className='facebook-button'>
-              <div className='social-media-button-text'>Facebook ile giriş yap</div>
-            </Button>
-          </div>
-        </form>
 
 
 
-      </div>
-    </div>
-  );
-}
 
-export default withStyles({ withTheme: true })(Login);
+export default Login;

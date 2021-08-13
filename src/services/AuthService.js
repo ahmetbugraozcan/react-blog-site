@@ -9,7 +9,7 @@ class AuthService {
 
     signUp(body) {
         return fetch(ServiceConstants.BASEURL + ServiceConstants.SIGNUP, {
-            method: 'POST',
+            method: ServiceConstants.POST,
             headers: {
                 "Content-Type": "application/json"
             },
@@ -31,7 +31,7 @@ class AuthService {
 
     login(body) {
         return fetch(ServiceConstants.BASEURL + ServiceConstants.LOGIN, {
-            method: 'POST',
+            method: ServiceConstants.POST,
             headers: {
                 "Content-Type": "application/json"
             },

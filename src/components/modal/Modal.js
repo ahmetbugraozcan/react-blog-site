@@ -1,6 +1,7 @@
 import React from 'react';
 import { GoVerified } from 'react-icons/go';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default class Modal extends React.Component {
     constructor(props) {
@@ -41,8 +42,8 @@ export default class Modal extends React.Component {
     render() {
         return (
             <div className='modal'>
-                <div  className='modal-content'>
-                    <div ref={this.setWrapperRef} className="modal-header">
+                <div  ref={this.setWrapperRef} className='modal-content'>
+                    <div className="modal-header">
                         <div className='header-with-icon'>
                             <GoVerified size={24} style={{ 'marginRight': '5px' }}></GoVerified>
                             <h2>Kayıt Başarılı!</h2>
@@ -52,7 +53,7 @@ export default class Modal extends React.Component {
                         }} className="close">&times;</span>
                     </div>
                     <div className="modal-body">
-                        <p>Kaydınız başarıyla tamamlandı. Lütfen kayıt olduğunuz hesap ile giriş yapın.</p>
+                        <p>Kaydınız başarıyla tamamlandı. Lütfen kayıt olduğunuz hesap ile <Link to='login' className='text-link'><b>giriş yapın.</b></Link></p>
                     </div>
                 </div>
             </div>

@@ -1,64 +1,80 @@
 import { InputAdornment, Button, Input, TextField } from '@material-ui/core';
-import { PersonOutline, LockOutlined, MailOutline, FaceOutlined } from '@material-ui/icons';
+import { LockOutlined, MailOutline } from '@material-ui/icons';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
-import { makeStyles } from '@material-ui/core/styles';
-import { withStyles } from "@material-ui/core/styles";
 import AuthService from "../services/AuthService";
 import { Link } from 'react-router-dom';
 import React from 'react';
+import { withRouter } from "react-router-dom";
+import { inject, observer } from "mobx-react";
 
+@inject("UserStore")
+@observer
 class Login extends React.Component {
 
-    state = { password: '', email: '', };
+    constructor(props) {
+        super(props);
+        this.state = { password: '', email: '', };
+        console.log("LOGİN: ",this.props.UserStore.user);
+        //giriş yapmış kullanıcı varsa burada kontrol edip homepage e yönlendirebiliriz
+    }
+
 
 
     validateForms(event) {
         event.preventDefault();
 
-        const body = { email: this.state.email, password: this.state.password};
+        const body = { email: this.state.email, password: this.state.password };
 
-         AuthService.login(body).then((res) => {
-          if(res){
-            console.log("VALUE: ", res)
-          }else{
-              console.log("GİRİŞ YAPILAMADI")
-          }
-         });
+
+        AuthService.login(body).then((res) => {
+            if (res) {
+                var r = this;
+                console.log('RESPONSE : ', res);
+                var user = JSON.parse(res);
+                this.props.UserStore.setUser({
+                    name: user.name,
+                    userName: user.userName,
+                    email: user.email,
+                    password: user.password,
+                });
+                this.props.history.push({
+                    pathname: '/',
+                });
+                // this.props.history.push({
+                //     pathname: '/',
+                //     state: {
+                //         user: res
+                //     }
+                // });
+            } else {
+                alert("Kullanıcı adı veya şifre yanlış")
+                console.log("GİRİŞ YAPILAMADI")
+            }
+        });
     }
     render() {
 
-        return (<div className='login-background'>
+        return (
+        <div className='login-background'>
             <div className='login-container'>
                 <h1 className='login-container-header'>Giriş Yap</h1>
                 <form className='login-input-container' onSubmit={(event) => { this.validateForms(event) }}>
-                    {/* <div className="single-input-container">
-                        <label htmlFor='email'>E-Posta</label>
-                        <Input 
-                        error={this.state.email === ""}
-                        errorText={"Errr"}
-                        helperText={this.state.email === "" ? 'Empty!' : ' '}
-                        onChange={event => this.setState({ email: event.target.value })}
-                        className='input-field' name='email' placeholder='E-Postanızı Giriniz' startAdornment={<InputAdornment position="start">
-                            <MailOutline />
-                        </InputAdornment>} >
-                        </Input>
-                    </div> */}
-                   <div className="single-input-container">
-                   <TextField
-                        error={this.state.email === ""}
-                        helperText={this.state.email === "" ? 'Lütfen geçerli bir email giriniz.' : ' '}
-                        onChange={event => this.setState({ email: event.target.value })}
-                        className="single-input-container"
-                        placeholder="E-posta"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <MailOutline />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                   </div>
+                    <div className="single-input-container">
+                        <TextField
+                            error={this.state.email === ""}
+                            helperText={this.state.email === "" ? 'Lütfen geçerli bir email giriniz.' : ' '}
+                            onChange={event => this.setState({ email: event.target.value })}
+                            className="single-input-container"
+                            placeholder="E-posta"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <MailOutline />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </div>
                     <div className="single-input-container">
                         <TextField
                             error={this.state.password === ""}
@@ -112,4 +128,4 @@ class Login extends React.Component {
 
 
 
-export default Login;
+export default withRouter(Login);

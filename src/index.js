@@ -4,9 +4,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { Provider } from "mobx-react";
+import { observer, inject} from 'mobx-react';
+
+import UserStore from './mobx/UserStore';
+
+const stores = {
+  UserStore
+};
+
+
+window._____APP_STATE_____ = stores;
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider {...stores}>
+      <App/ >
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

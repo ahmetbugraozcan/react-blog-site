@@ -9,13 +9,13 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../components/modal/Modal'
-
-
+import { inject, observer } from 'mobx-react';
 
 class Signup extends React.Component {
 
   constructor(props) {
     super(props);
+    
     this.state = { password: '', email: '', name: '', userName: '', show: false };
   }
 
@@ -146,5 +146,5 @@ class Signup extends React.Component {
 
 }
 
-export default withStyles({ withTheme: true })(Signup);
+export default Signup;
 

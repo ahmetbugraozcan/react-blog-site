@@ -1,18 +1,26 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import logo from "./logo.svg";
 import "./App.css";
-import AuthService from "./services/AuthService";
 import { inject, observer } from "mobx-react";
 import Signup from "./screens/Signup";
 import Login from "./screens/Login";
 import HomePage from "./screens/HomePage";
 import Navbar from "./components/modal/Navbar";
+import AuthService from "./services/AuthService";
 
 
 @inject("UserStore")
 @observer
 class App extends Component {
+    constructor(props) {
+        super(props);
+        var currentUser =  AuthService.getCurrentUser();
+        if (currentUser != undefined) {
+            this.props.UserStore.setUser(currentUser);
+        } 
+
+    }
+
     render() {
         return (
             <Router>

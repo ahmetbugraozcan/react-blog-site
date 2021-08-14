@@ -15,7 +15,7 @@ class Signup extends React.Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = { password: '', email: '', name: '', userName: '', show: false };
   }
 
@@ -24,13 +24,33 @@ class Signup extends React.Component {
 
     const body = { name: this.state.name, userName: this.state.userName, email: this.state.email, password: this.state.password };
 
-    //400 alıyoruz bakalım buna
-    AuthService.signUp(body).then((value) => {
-      console.log("VALUE: ", value)
-      if (value) {
+    // AuthService.signUp(body).then((value) => {
+    //   console.log("VALUE: ", value)
+    //   if (value) {
+    //     this.setState({ show: true });
+    //   }
+    // });
+
+    AuthService.signUp(body).then(
+      (response) => {
+        // setMessage(response.data.message);
+        // setSuccessful(true);
+        console.log("SIGNUP SAYFASI RESPONSE : " , response )
         this.setState({ show: true });
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+          console.log("ERROR SIGNUP : " , resMessage)
+
+        // setMessage(resMessage);
+        // setSuccessful(false);
       }
-    });
+    );
   }
 
   closeModal() {

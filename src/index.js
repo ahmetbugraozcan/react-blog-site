@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from "mobx-react";
 import { observer, inject} from 'mobx-react';
 
-import UserStore from './mobx/UserStore';
+import UserStore from './helpers/UserStore';
 
 const stores = {
   UserStore

@@ -6,6 +6,7 @@ class AuthService {
 
 
     signUp(body) {
+      // Object olduğu için dönüştürmeye gerek yok, logine bakılmadı
         return fetch(ServiceConstants.BASEURL + ServiceConstants.SIGNUP, {
             method: ServiceConstants.POST,
             headers: {
@@ -15,6 +16,7 @@ class AuthService {
         }).then((res) => {
             console.log("STATUSCODE", res.status)
             if (res.status == '200') {
+                console.log("TRUE DÖNDÜ")
                 return true;
             }
             else {

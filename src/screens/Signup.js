@@ -35,8 +35,10 @@ class Signup extends React.Component {
       (response) => {
         // setMessage(response.data.message);
         // setSuccessful(true);
-        console.log("SIGNUP SAYFASI RESPONSE : " , response )
-        this.setState({ show: true });
+        console.log("SIGNUP SAYFASI RESPONSE : ", response)
+        if (response) {
+          this.setState({ show: true });
+        }
       },
       (error) => {
         const resMessage =
@@ -45,7 +47,7 @@ class Signup extends React.Component {
             error.response.data.message) ||
           error.message ||
           error.toString();
-          console.log("ERROR SIGNUP : " , resMessage)
+        console.log("ERROR SIGNUP : ", resMessage)
 
         // setMessage(resMessage);
         // setSuccessful(false);
@@ -71,6 +73,9 @@ class Signup extends React.Component {
           <form className='signup-input-container' onSubmit={(event) => { this.validateAllForms(event) }}>
             <div>
               <TextField
+                id='name'
+                type='name'
+                name='name'
                 error={this.state.name === ""}
                 helperText={this.state.name === "" ? 'Lütfen geçerli bir isim giriniz.' : ' '}
                 onChange={event => this.setState({ name: event.target.value })}
@@ -87,6 +92,9 @@ class Signup extends React.Component {
             </div>
             <div className="single-input-container">
               <TextField
+                id='userName'
+                type='userName'
+                name='userName'
                 error={this.state.userName === ""}
                 helperText={this.state.userName === "" ? 'Lütfen geçerli bir kullanıcı adı giriniz.' : ' '}
                 onChange={event => this.setState({ userName: event.target.value })}
@@ -103,6 +111,9 @@ class Signup extends React.Component {
             </div>
             <div className="single-input-container">
               <TextField
+                id='email'
+                type='email'
+                name='email'
                 error={this.state.email === ""}
                 helperText={this.state.email === "" ? 'Lütfen geçerli bir e-posta giriniz.' : ' '}
                 onChange={event => this.setState({ email: event.target.value })}
@@ -119,6 +130,8 @@ class Signup extends React.Component {
             </div>
             <div className="single-input-container">
               <TextField
+                id='password'
+                name='password'
                 error={this.state.password === ""}
                 helperText={this.state.password === "" ? 'Lütfen geçerli bir şifre giriniz.' : ' '}
                 onChange={event => this.setState({ password: event.target.value })}

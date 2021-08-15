@@ -7,7 +7,7 @@ const Navbar = inject("UserStore")(observer((props) => {
     function logOut() {
         AuthService.logOut();
         props.UserStore.setUser(undefined);
-     
+
     };
 
     return (
@@ -17,9 +17,9 @@ const Navbar = inject("UserStore")(observer((props) => {
                 <Link to="/">Ana Sayfa</Link>
                 {!props.UserStore.user && <Link to="/login">{`Giriş Yap`}</Link>}
                 {!props.UserStore.user && <Link to="/signup">Kaydol</Link>}
-                {props.UserStore.user && <div onClick={() => {
+                {props.UserStore.user && <a onClick={() => {
                     logOut();
-                }}>Çıkış Yap</div>}
+                }}>Çıkış Yap</a>}
             </div>
 
         </nav>

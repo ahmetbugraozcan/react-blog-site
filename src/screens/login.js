@@ -101,6 +101,8 @@ class Login extends React.Component {
                     <form className='login-input-container' onSubmit={(event) => { this.validateForms(event) }}>
                         <div className="single-input-container">
                             <TextField
+                                id='email'
+                                type='email'
                                 error={this.state.email === ""}
                                 helperText={this.state.email === "" ? 'Lütfen geçerli bir email giriniz.' : ' '}
                                 onChange={event => this.setState({ email: event.target.value })}
@@ -117,11 +119,13 @@ class Login extends React.Component {
                         </div>
                         <div className="single-input-container">
                             <TextField
+                                
                                 error={this.state.password === ""}
                                 helperText={this.state.password === "" ? 'Lütfen geçerli bir şifre giriniz.' : ' '}
                                 onChange={event => this.setState({ password: event.target.value })}
                                 className="single-input-container"
                                 placeholder="Şifre"
+                                id='password'
                                 type='password'
                                 InputProps={{
                                     startAdornment: (

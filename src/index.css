@@ -4,6 +4,7 @@
     font-family: "Quicksand";
     color: #333;
 }
+
 body, html {
     height: 100%;
     margin: 0;
@@ -15,22 +16,26 @@ body, html {
     align-items: center;
     margin: 0 auto;
     border-bottom: 1px solid #f2f2f2;
-  }
-  .navbar h1 {
+}
+
+.navbar h1 {
     color: #f1356d;
-  }
-  .navbar .links {
+}
+
+.navbar .links {
     margin-left: auto;
-  }
-  .navbar a {
+}
+
+.navbar a {
     margin-left: 16px;
     text-decoration: none;
     padding: 6px;
-  }
-  .navbar a:hover {
-    color: #f1356d;
-  }
+}
 
+.navbar a:hover {
+    cursor: pointer;
+    color: #f1356d;
+}
 
 input, label {
     display: block;
@@ -43,7 +48,6 @@ input, label {
     position: fixed;
     width: 100%;
     height: 100%;
-
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

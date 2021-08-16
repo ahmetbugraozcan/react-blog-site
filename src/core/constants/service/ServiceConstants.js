@@ -4,4 +4,5 @@ module.exports ={
     SIGNUP: '/signup',
     BASEURL: 'http://localhost:9000',
     POST: 'POST',
+    GET: 'GET',
 }

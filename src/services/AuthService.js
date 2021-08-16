@@ -31,10 +31,11 @@ class AuthService {
 
 
     login(body) {
+        // var token = this.getToken();
         return fetch(ServiceConstants.BASEURL + ServiceConstants.LOGIN, {
             method: ServiceConstants.POST,
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(body),
         }).then(response => {
@@ -60,6 +61,14 @@ class AuthService {
         return JSON.parse(localStorage.getItem("user"));
     };
 
+    // storeToken(token){
+    //     localStorage.setItem('id_token', token);
+    //   }
+    
+    
+    //   getToken(){
+    //     return localStorage.getItem('id_token');
+    //   }
 
     // signUp(body) {
     //     return fetch(ServiceConstants.BASEURL + ServiceConstants.SIGNUP, {

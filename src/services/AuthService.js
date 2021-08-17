@@ -4,7 +4,6 @@ import { inject, observer } from "mobx-react";
 
 class AuthService {
 
-
     signUp(body) {
       // Object olduğu için dönüştürmeye gerek yok, logine bakılmadı
         return fetch(ServiceConstants.BASEURL + ServiceConstants.SIGNUP, {
@@ -29,7 +28,6 @@ class AuthService {
 
     }
 
-
     login(body) {
         // var token = this.getToken();
         return fetch(ServiceConstants.BASEURL + ServiceConstants.LOGIN, {
@@ -42,7 +40,7 @@ class AuthService {
             if (response.status == '200'){
                 return response.text();
             }else{
-                throw '404 NOT FOUND'
+                throw `${response.status} ERROR`
             }
         }
         ).then(response => {
@@ -60,57 +58,6 @@ class AuthService {
     getCurrentUser = () => {
         return JSON.parse(localStorage.getItem("user"));
     };
-
-    // storeToken(token){
-    //     localStorage.setItem('id_token', token);
-    //   }
-    
-    
-    //   getToken(){
-    //     return localStorage.getItem('id_token');
-    //   }
-
-    // signUp(body) {
-    //     return fetch(ServiceConstants.BASEURL + ServiceConstants.SIGNUP, {
-    //         method: ServiceConstants.POST,
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(body),
-    //     }).then((res) => {
-    //         console.log("STATUSCODE", res.status)
-    //         if (res.status == '200') {
-    //             return true;
-    //         }
-    //         else {
-    //             return false;
-    //         }
-    //     }).catch(err => {
-    //         console.log("LOGIN CATCH AUTHSERVICE ", err)
-    //         return false;
-    //     });
-
-    // }
-
-    // login(body) {
-    //     return fetch(ServiceConstants.BASEURL + ServiceConstants.LOGIN, {
-    //         method: ServiceConstants.POST,
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(body),
-    //     }).then((res) => {
-    //         if (res.status == '200') {
-    //             return res.text();
-    //         }
-    //         else {
-    //             return null;
-    //         }
-    //     }).catch(err => {
-    //         console.log("LOGIN CATCH AUTHSERVICE ", err)
-    //         return null;
-    //     });
-    // }
 
 }
 export default new AuthService();

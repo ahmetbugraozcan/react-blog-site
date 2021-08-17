@@ -16,13 +16,13 @@ class Signup extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { password: '', email: '', name: '', userName: '', show: false };
+    this.state = { password: '', email: '', name: '', username: '', show: false };
   }
 
   validateAllForms(event) {
     event.preventDefault();
 
-    const body = { name: this.state.name, userName: this.state.userName, email: this.state.email, password: this.state.password };
+    const body = { name: this.state.name, username: this.state.username, email: this.state.email, password: this.state.password };
 
     // AuthService.signUp(body).then((value) => {
     //   console.log("VALUE: ", value)
@@ -92,12 +92,12 @@ class Signup extends React.Component {
             </div>
             <div className="single-input-container">
               <TextField
-                id='userName'
-                type='userName'
-                name='userName'
-                error={this.state.userName === ""}
-                helperText={this.state.userName === "" ? 'Lütfen geçerli bir kullanıcı adı giriniz.' : ' '}
-                onChange={event => this.setState({ userName: event.target.value })}
+                id='username'
+                type='username'
+                name='username'
+                error={this.state.username === ""}
+                helperText={this.state.username === "" ? 'Lütfen geçerli bir kullanıcı adı giriniz.' : ' '}
+                onChange={event => this.setState({ username: event.target.value })}
                 className="single-input-container"
                 label="Kullanıcı Adı"
                 InputProps={{

@@ -9,8 +9,8 @@ export class UserStore {
     setUser(value) {
         this.user = value;
     }
-    setUserName(value) {
-        this.user.userName = value;
+    setUsername(value) {
+        this.user.username = value;
     }
 }
 export default new UserStore()

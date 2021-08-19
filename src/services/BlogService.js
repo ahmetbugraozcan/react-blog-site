@@ -4,6 +4,23 @@ import { inject, observer } from "mobx-react";
 
 class BlogService {
 
+    getBlogs(){
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.BLOG, {
+            method: ServiceConstants.GET,
+        }).then((res) => {
+            console.log("STATUSCODE", res.status)
+            if (res.status == '200') {
+                return res.text();
+            }
+            else {
+                return null;
+            }
+        }).catch(err => {
+            console.log("LOGIN CATCH BLOGSERVICE ADD ", err)
+            return null
+        });
+    }
+
     addBlog(body) {
       // Object olduğu için dönüştürmeye gerek yok, logine bakılmadı
         return fetch(ServiceConstants.BASEURL + ServiceConstants.BLOG, {

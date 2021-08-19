@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './styles/index.css';
+import './styles/blog-card.css'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { Provider } from "mobx-react";
-import { observer, inject} from 'mobx-react';
+// import { observer, inject} from 'mobx-react';
 
 import UserStore from './helpers/UserStore';
 

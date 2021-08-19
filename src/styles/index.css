@@ -51,7 +51,7 @@ input, label {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url("./assets/images/loginbackground.jpg");
+    background-image: url("../assets/images/loginbackground.jpg");
 }
 
 /*responsive olsun*/

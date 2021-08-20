@@ -4,7 +4,9 @@
     font-family: "Quicksand";
     color: #333;
 }
-
+a {
+    text-decoration: none; /* no underline */
+  }
 body, html {
     height: 100%;
     margin: 0;

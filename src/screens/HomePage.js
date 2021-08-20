@@ -1,6 +1,6 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { inject, observer } from "mobx-react";
-import { Button } from "@material-ui/core";
+import { Button, Divider } from "@material-ui/core";
 import BlogService from "../services/BlogService";
 import React, { useState } from "react";
 
@@ -33,7 +33,7 @@ class HomePage extends React.Component {
     componentDidMount() {
         BlogService.getBlogs().then((res) => {
             console.log("setstate")
-            this.setState({blogs: JSON.parse(res)})
+            this.setState({ blogs: JSON.parse(res) })
             // this.setState(this.state)
         })
 
@@ -58,28 +58,53 @@ class HomePage extends React.Component {
      */
     render() {
         return (
-        <div className='page-content-wrapper'>
-            <div className='blog-grid'>
-                {
-                this.state.blogs.map((blog) => {
-                   return <div>
-                        <div className='blog-card'>
-                    <div className='blog-photo-wrapper'>
-                        <img className='blog-photo' src={blog.image} />
-                    </div>
-                    <div className='blog-card-content-wrapper'>
-                        <p className='blog-content-header'>{blog.title}</p>
-                        <div className="blog-content-container">
-                            <p className='blog-content'>{blog.content}</p>
-                        </div>
+            <div className='blog-page-background'>
+                <div className='page-content-wrapper'>
+                    <div className='blog-grid'>
+                        {
+                            this.state.blogs.map((blog) => {
+                                return <Link key={blog._id} to={`/blog/${blog._id}`} >
+                                    <div className='blog-card'>
+                                        <div className='blog-photo-wrapper'>
+                                            <img className='blog-photo' src={blog.image} alt='blog-image' />
+                                        </div>
+                                        <div className="blog-body">
+                                            <div className='blog-card-content-wrapper'>
+                                                <p className='blog-content-header'>{blog.title}</p>
+                                                <div className="blog-content-container">
+                                                    <p className='blog-content'>{blog.content}</p>
+                                                </div>
+                                                <Divider></Divider>
+                                            </div>
+                                            <div className='blog-footer'>
+                                                <div className='blog-footer-icon-container'>
+                                                    <div className='blog-icon-row'>
+                                                        <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/709/709612.png" alt="view-icon" />
+                                                        <div className='blog-icon-row-text'>{blog.numberOfView}</div>
+                                                    </div>
+                                                    <div className='blog-icon-row'>
+                                                        <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/1077/1077035.png" alt="view-icon" />
+                                                        <div className='blog-icon-row-text'>{blog.likes.length}</div>
+                                                    </div>
+                                                    <div className='blog-icon-row'>
+                                                        <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/54/54761.png" alt="comment-icon" />
+                                                        <div className='blog-icon-row-text'>{blog.comments.length}</div>
+                                                    </div>
+                                                </div>
+                                                <div className='blog-footer-date-container'>
+                                                    {blog.createdDate}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            })
+                        }
+
                     </div>
                 </div>
-                   </div>
-                })
-                }
-
             </div>
-        </div>)
+        )
     };
 }
 

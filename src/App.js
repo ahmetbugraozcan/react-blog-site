@@ -7,6 +7,8 @@ import Login from "./screens/Login";
 import HomePage from "./screens/HomePage";
 import Navbar from "./components/modal/Navbar";
 import AuthService from "./services/AuthService";
+import BlogDetails from "./screens/BlogDetail";
+import AddBlog from "./screens/AddBlog";
 
 
 @inject("UserStore")
@@ -29,13 +31,19 @@ class App extends Component {
                     <div className="content">
                         <Switch>
                             <Route exact path="/">
-                                <HomePage username={'aaa'} />
+                                <HomePage />
                             </Route>
                             <Route path="/signup">
                                 <Signup />
                             </Route>
                             <Route path="/login">
                                 <Login />
+                            </Route>
+                            <Route path="/blog/:id">
+                                <BlogDetails />
+                            </Route> 
+                            <Route path="/add-blog">
+                                <AddBlog />
                             </Route>
                         </Switch>
                     </div>

@@ -4,6 +4,9 @@ import { useHistory } from "react-router-dom";
 import BlogService from "../services/BlogService";
 import { inject, observer } from "mobx-react";
 import { observable } from "mobx";
+import { Editor, RichUtils } from "draft-js";
+import EditorState from "draft-js/lib/EditorState";
+import MyEditor from "../components/modal/MyEditor"
 
 
 // authorName: Joi.string().required(),
@@ -11,7 +14,7 @@ import { observable } from "mobx";
 
 @inject("UserStore")
 @observer
-class AddBlog extends React.Component{
+class AddBlog extends React.Component {
     constructor(props) {
         super(props);
         // const [title, setTitle] = useState('');
@@ -26,10 +29,37 @@ class AddBlog extends React.Component{
             image: 'https://blog.holosophic.org/wp-content/uploads/2018/05/Countries-page-image-placeholder-800x500.jpg',
             isPending: false,
         }
+        this.onChange = (editorState) => this.setState({ editorState });
+    }
+    _onBoldClick() {
+        this.onChange(RichUtils.toggleInlineStyle(
+            this.state.editorState,
+            'BOLD'
+        ));
+    }
+    _onLinkClick() {
+        this.onChange(RichUtils.toggleInlineStyle(
+            this.state.editorState,
+            'LINK'
+        ));
     }
 
+    handleKeyCommand(command, editorState) {
+        const newState = RichUtils.handleKeyCommand(editorState, command);
+
+        if (newState) {
+            this.onChange(newState);
+            return 'handled';
+        }
+
+        return 'not-handled';
+    }
+
+    componentDidMount(){
+        console.log(this.state.editorState)
+    }
     addBlog() {
-        console.log("title : " , this.state.title)
+        console.log("title : ", this.state.title)
         const blog = {
             title: this.state.title,
             content: this.state.content,
@@ -39,13 +69,13 @@ class AddBlog extends React.Component{
         }
         // Api request here
         // setIsPending(true);
-        this.setState({isPending: true})
+        this.setState({ isPending: true })
         console.log("Blog : ", blog)
-        
+
         BlogService.addBlog(blog).then((res) => {
             {
                 this.setState(this.state);
-                this.setState({isPending: false})
+                this.setState({ isPending: false })
                 if (res) {
                     // var blogRes = JSON.parse(res);
                     console.log("RESPONSE : ", res);
@@ -54,7 +84,7 @@ class AddBlog extends React.Component{
                 else {
                     alert("Blog yüklenirken bir hata oluştu")
                 }
-               
+
             }
         }
         )
@@ -97,7 +127,7 @@ class AddBlog extends React.Component{
                         }}
                     />
                     <label>Blog İçeriği:</label>
-                    <textarea
+                    {/* <textarea
                         required
                         minLength={40}
                         value={this.state.content}
@@ -105,7 +135,8 @@ class AddBlog extends React.Component{
                             e.preventDefault();
                             this.setState({ content: e.target.value })
                         }}
-                    ></textarea>
+                    ></textarea> */}
+
                     {/* <label>Blog author:</label> */}
                     {/* <select
                     value={author}
@@ -116,8 +147,9 @@ class AddBlog extends React.Component{
                 </select> */}
                     {!this.state.isPending && <button>Add Blog</button>}
                     {this.state.isPending && <button>Adding blog..</button>}
-
                 </form>
+                <MyEditor />
+                {/* <DraftEditor onChange={this.onChange} editorState={this.state.editorState}/> */}
             </div>
         );
     }

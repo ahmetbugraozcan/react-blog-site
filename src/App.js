@@ -7,7 +7,8 @@ import Login from "./screens/Login";
 import HomePage from "./screens/HomePage";
 import Navbar from "./components/modal/Navbar";
 import AuthService from "./services/AuthService";
-import BlogDetails from "./screens/BlogDetail";
+import BlogDetails from "./screens/BlogDetails";
+import UserDetails from "./screens/UserDetails";
 import AddBlog from "./screens/AddBlog";
 
 
@@ -39,8 +40,11 @@ class App extends Component {
                             <Route path="/login">
                                 <Login />
                             </Route>
-                            <Route path="/blog/:id">
+                            <Route exact path="/blog/:id">
                                 <BlogDetails />
+                            </Route> 
+                            <Route exact path="/user/:id">
+                                <UserDetails />
                             </Route> 
                             <Route path="/add-blog">
                                 <AddBlog />

@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
 import useFetch from '../helpers/useFetch';
 import BlogService from "../services/BlogService";
+import { inject, observer } from "mobx-react";
+import { Link, useLocation } from "react-router-dom";
 
-const BlogDetails = () => {
+
+
+const BlogDetails = inject("UserStore")(observer((props) => {
     const { id } = useParams();
     const [blog, setBlog] = useState(null);
     const [isPending, setIsPending] = useState(true);
@@ -35,20 +39,25 @@ const BlogDetails = () => {
 
 
     return (
-        <div className="blog-details">
+        <div className="blog-detail-page">
             {isPending && <div>Loading...</div>}
             {error && <div>{error}</div>}
             {blog && (
-                <article>
-                    <h2>{blog.title}</h2>
-                    <p>Written by {blog.authorName}</p>
-                    <div>{blog.body}</div>
-                </article>
+
+                <div className="blog-detail-page-content-wrapper">
+                    <img src={`${blog.image}`} alt="blog-image" className="blog-detail-image" />
+                    <article className='blog-detail-article'>
+                        <h2 className='blog-detail-header'>{blog.title}</h2>
+                        <div className='blog-detail-content'>{blog.content}</div>
+                        <p className='blog-detail-author'>Written by <Link to={`../user/${blog.authorID}`}>{blog.authorName}</Link></p>
+                    </article>
+                </div>
+
             )}
 
 
         </div>
     );
-}
+}));
 
 export default BlogDetails;

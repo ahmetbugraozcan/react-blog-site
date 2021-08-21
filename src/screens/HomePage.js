@@ -61,8 +61,7 @@ class HomePage extends React.Component {
             <div className='blog-page-background'>
                 <div className='page-content-wrapper'>
                     <div className='blog-grid'>
-                        {
-                            this.state.blogs.map((blog) => {
+                        { this.state.blogs && this.state.blogs.map((blog) => {
                                 return <Link key={blog._id} to={`/blog/${blog._id}`} >
                                     <div className='blog-card'>
                                         <div className='blog-photo-wrapper'>

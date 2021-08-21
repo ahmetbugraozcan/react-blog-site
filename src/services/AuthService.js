@@ -4,6 +4,23 @@ import { inject, observer } from "mobx-react";
 
 class AuthService {
 
+    getUser(id){
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.USER + `/${id}`, {
+            method: ServiceConstants.GET,
+        }).then((res) => {
+            console.log("STATUSCODE", res.status)
+            if (res.status == '200') {
+                return res.text();
+            }
+            else {
+                return null;
+            }
+        }).catch(err => {
+            console.log("LOGIN CATCH USERSERVİCE GETUSER", err)
+            return null
+        });
+    }
+
     signUp(body) {
       // Object olduğu için dönüştürmeye gerek yok, logine bakılmadı
         return fetch(ServiceConstants.BASEURL + ServiceConstants.SIGNUP, {

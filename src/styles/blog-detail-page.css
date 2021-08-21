@@ -1,0 +1,51 @@
+.blog-detail-page{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(242, 246, 246);
+}
+
+
+.blog-detail-page-content-wrapper{
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    width: 50%;
+    flex-direction: column;   
+    margin: 20px;
+}
+
+.blog-detail-image{
+    background-color: red;
+
+}
+
+.blog-detail-article{
+    padding-top: 20px;
+
+}
+
+.blog-detail-header{
+  padding-bottom: 10px;
+}
+
+
+.blog-detail-author{
+    padding-top: 10px;
+    text-align: end;
+    font-size: 18px;
+    font-weight: 600;
+    
+  }
+
+.blog-detail-content{
+    text-align: start;
+    font-size: 18px;
+}
+
+

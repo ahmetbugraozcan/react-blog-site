@@ -4,18 +4,18 @@
   text-align: center;
 }
 
-.create label {
+.add-blog-body label {
   text-align: left;
   display: block;
 }
 
-.create h2 {
+.add-blog-body h2 {
   font-size: 20px;
   color: #f1356d;
   margin-bottom: 30px;
 }
 
-.create input, .create textarea, .create select {
+.add-blog-body input, .add-blog-body textarea, .add-blog-body select {
   width: 100%;
   padding: 6px 10px;
   margin: 10px 0;
@@ -24,7 +24,7 @@
   display: block;
 }
 
-.create button {
+.add-blog-body button {
   background: #f1356d;
   color: #fff;
   border: 0;
@@ -60,4 +60,11 @@
 
 .add-blog-image-icon:hover{
   fill: black !important;
+}
+
+.editor-container{
+  display: flex;
+  flex-direction: row;
+  overflow: none;
+  justify-content: center;
 }

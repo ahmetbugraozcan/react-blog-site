@@ -5,12 +5,50 @@
     font-family: "Quicksand";
     color: #333;
 }
+
 a {
-    text-decoration: none; /* no underline */
-  }
+    text-decoration: none;
+    /* no underline */
+}
+
 body, html {
     height: 100%;
     margin: 0;
+}
+
+blockquote {
+    background: #f9f9f9;
+    border-left: 10px solid #ccc;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+    quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+    color: #ccc;
+    content: open-quote;
+    font-size: 4em;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;
+}
+
+blockquote p {
+    display: inline;
+}
+
+/* Code in text */
+
+code {
+    font-family: monospace;
+}
+
+p>code, li>code, dd>code, td>code {
+    background: #ffeff0;
+    word-wrap: break-word;
+    box-decoration-break: clone;
+    padding: .1rem .3rem .2rem;
+    border-radius: .2rem;
 }
 
 .navbar {

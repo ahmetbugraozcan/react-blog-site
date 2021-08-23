@@ -3,13 +3,20 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
+    min-height: 100vh;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     background-color: rgb(242, 246, 246);
 }
 
+/* .blog-detail-content{
+
+} */
+
+.blog-detail-content > figure > img{
+    max-width: 100%;
+}
 
 .blog-detail-page-content-wrapper{
     background-color: white;
@@ -20,14 +27,12 @@
     margin: 20px;
 }
 
-.blog-detail-image{
-    background-color: red;
+/* .blog-detail-image{
 
-}
+} */
 
 .blog-detail-article{
     padding-top: 20px;
-
 }
 
 .blog-detail-header{

@@ -2,19 +2,20 @@
 import React from "react";
 import BlogService from "../services/BlogService";
 import { inject, observer } from "mobx-react";
-import { withFormik } from 'formik';
 import { EditorState } from 'draft-js';
-import MyEditor from '../components/modal/MyEditor';
-import EditorForm from "../components/modal/EditorForm";
-import { Editor } from 'react-draft-wysiwyg';
+import { convertFromRaw, convertToRaw} from 'draft-js';
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-
+// // the raw state, stringified
+// const rawDraftContentState = JSON.stringify( convertToRaw(this.state.editorState.getCurrentContent()) );
+// // convert the raw state back to a useable ContentState object
+// const contentState = convertFromRaw( JSON.parse( rawDraftContentState) );
 @inject("UserStore")
 @observer
 class AddBlog extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             title: '',
             content: '',
@@ -22,20 +23,27 @@ class AddBlog extends React.Component {
             isPending: false,
             editorState: EditorState.createEmpty(),
         }
+
         //-----------------------------------------------------------------
 
     }
+
     onEditorStateChange = (editorState) => {
         this.setState({
-          editorState,
+            editorState,
         });
-      };
+    };
+
 
     addBlog() {
-        console.log("title : ", this.state.title)
+        var contentRaw = convertToRaw(this.state.editorState.getCurrentContent());
+        // localStorage.setItem('draftRaw', JSON.stringify(contentRaw));
+        console.log(contentRaw.entityMap)
         const blog = {
+            previewSubtitle: this.state.previewSubtitle,
             title: this.state.title,
-            content: this.state.content,
+            previewSubtitle: this.state.previewSubtitle,
+            content: contentRaw,
             image: this.state.image,
             authorName: this.props.UserStore.user.username,
             authorID: this.props.UserStore.user._id,
@@ -44,25 +52,22 @@ class AddBlog extends React.Component {
         // setIsPending(true);
         this.setState({ isPending: true })
         // console.log("Blog : ", blog)
+        BlogService.addBlog(blog).then((res) => {
+            {
+                this.setState(this.state);
+                this.setState({ isPending: false })
+                if (res) {
+                    // var blogRes = JSON.parse(res);
+                    console.log("RESPONSE : ", res);
+                    alert("Blog Başarıyla Eklendi")
+                }
+                else {
+                    alert("Blog yüklenirken bir hata oluştu")
+                }
 
-
-
-        // BlogService.addBlog(blog).then((res) => {
-        //     {
-        //         this.setState(this.state);
-        //         this.setState({ isPending: false })
-        //         if (res) {
-        //             // var blogRes = JSON.parse(res);
-        //             console.log("RESPONSE : ", res);
-        //             alert("Blog Başarıyla Eklendi")
-        //         }
-        //         else {
-        //             alert("Blog yüklenirken bir hata oluştu")
-        //         }
-
-        //     }
-        // }
-        // )
+            }
+        }
+        )
     }
 
     render() {
@@ -75,7 +80,6 @@ class AddBlog extends React.Component {
                     <div className="create">
                         <h2>Yeni Blog Ekle</h2>
                         <h2>{this.props.UserStore.user.name}</h2>
-
                         <label>Blog Başlığı:</label>
                         <input
                             type="text"
@@ -88,6 +92,18 @@ class AddBlog extends React.Component {
                                 this.setState({ title: e.target.value })
                             }}
                         />
+                         <label>Blog Altyazısı:</label>
+                        <input
+                            type="text"
+                            required
+                            minLength={20}
+                            maxLength={150}
+                            value={this.state.previewSubtitle}
+                            onChange={(e) => {
+                                e.preventDefault();
+                                this.setState({ previewSubtitle: e.target.value })
+                            }}
+                        />
                         <label>Blog Fotoğrafı:</label>
                         <input
                             type="text"
@@ -98,17 +114,24 @@ class AddBlog extends React.Component {
                                 this.setState({ image: e.target.value })
                             }}
                         />
-                        <label>Blog İçeriği:</label>
                         <div className='editor-container'></div>
                     </div>
 
                     <div className="editor-container">
-                        <EditorForm
-                           
+                        <Editor
+                        // customStyleMap={}
+                            editorState={this.state.editorState}
+                            toolbarClassName="toolbarClassName"
+                            wrapperClassName="wrapperClassName"
+                            editorClassName="editorClassName"
+                            onEditorStateChange={this.onEditorStateChange}
                         />
                     </div>
-                    {!this.state.isPending && <button>Add Blog</button>}
-                    {this.state.isPending && <button>Adding blog..</button>}
+                    <div style={{marginTop: '50px'}}>
+                        {!this.state.isPending && <button>Add Blog</button>}
+                        {this.state.isPending && <button>Adding blog..</button>}
+                    </div>
+
                 </form>
             </div>
         );

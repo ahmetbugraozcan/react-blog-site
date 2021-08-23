@@ -149,7 +149,7 @@
 
 //         <div className="editor">
 //           <Editor
-          
+
 //             placeholder="Blog yazınızı giriniz"
 //             editorState={this.state.editorState}
 //             handleKeyCommand={this.handleKeyCommand}
@@ -171,7 +171,7 @@ import React from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 
 export default class MyEditor extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.myEditor = React.createRef();
 
@@ -227,6 +227,10 @@ export default class MyEditor extends React.Component {
         />
         <div className={className} >
           <Editor
+            onEditorStateChange={editorState => {
+              setEditorState(editorState);
+              handleChange(editorState);
+            }}
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}
             editorState={editorState}

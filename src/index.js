@@ -4,9 +4,6 @@ import './styles/index.css';
 import './styles/blog-card.css'
 import './styles/add-blog.css'
 import './styles/blog-detail-page.css'
-import './styles/draft-editor.css'
-import './styles/formik-demo.css';
-import './styles/rich-editor.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';

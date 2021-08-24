@@ -4,6 +4,9 @@ import { Button, Divider } from "@material-ui/core";
 import { convertFromRaw } from "draft-js";
 import BlogService from "../services/BlogService";
 import React, { useState } from "react";
+import emptyheart from '../assets/icons/emptyheart.svg'
+import heart from '../assets/icons/heart.svg'
+import { FavoriteBorder } from "@material-ui/icons";
 import { stateToHTML } from "draft-js-export-html";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 // const HomePage = inject("UserStore")(observer((props) => {    // const location = useLocation();
@@ -16,7 +19,6 @@ import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from
 
 @inject("UserStore")
 @observer
-
 class HomePage extends React.Component {
     constructor(props) {
         super(props)
@@ -34,13 +36,18 @@ class HomePage extends React.Component {
     }
     componentDidMount() {
         BlogService.getBlogs().then((res) => {
-            console.log("setstate")
-            var data = JSON.parse(res)[0];
-            var content = convertFromRaw(data.content);
-            console.log(content)
-            // console.log(body);
-            console.log(JSON.parse(res)[0])
-            this.setState({ blogs: JSON.parse(res) })
+            var blogsRes = JSON.parse(res);
+            blogsRes.forEach(blogRes => {
+                blogRes.isLiked = false;
+                blogRes.likes.forEach(like => {
+                    if (like.likerID == this.props.UserStore.user?._id) {
+                        console.log("BEĞENMİŞSİN");
+                        blogRes.isLiked = true;
+                    }
+                })
+            })
+          
+            this.setState({ blogs: blogsRes })
             this.setState(this.state)
         })
 
@@ -91,7 +98,9 @@ class HomePage extends React.Component {
                                                     <div className='blog-icon-row-text'>{blog.numberOfView}</div>
                                                 </div>
                                                 <div className='blog-icon-row'>
-                                                    <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/1077/1077035.png" alt="view-icon" />
+                                                    <img className='blog-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />
+                    {/* {<img onClick={() => { likeBlog(blog._id) }} className='like-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />} */}
+
                                                     <div className='blog-icon-row-text'>{blog.likes.length}</div>
                                                 </div>
                                                 <div className='blog-icon-row'>

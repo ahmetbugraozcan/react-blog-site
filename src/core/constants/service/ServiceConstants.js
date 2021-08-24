@@ -7,4 +7,5 @@ module.exports ={
     POST: 'POST',
     GET: 'GET',
     USER: '/user',
+    LIKE: '/like',
 }

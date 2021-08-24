@@ -127,10 +127,16 @@
     align-items: center;
     margin-right: 20px;
 }
-.blog-icon{
+.blog-icon,
+.like-icon{
     width: 20px;
     height: 20px;
 }
+
+/* .like-icon:hover{
+    background-color: red;
+} */
+
 .blog-icon-row-text{
     padding: 4px;
     

@@ -1,9 +1,8 @@
 import ServiceConstants from '../core/constants/service/ServiceConstants'
 
-import { inject, observer } from "mobx-react";
 
 class BlogService {
-    getBlog(id){
+    getBlog(id) {
         return fetch(ServiceConstants.BASEURL + ServiceConstants.BLOG + `/${id}`, {
             method: ServiceConstants.GET,
         }).then((res) => {
@@ -20,7 +19,7 @@ class BlogService {
         });
     }
 
-    getBlogs(){
+    getBlogs() {
         return fetch(ServiceConstants.BASEURL + ServiceConstants.BLOG, {
             method: ServiceConstants.GET,
         }).then((res) => {
@@ -38,7 +37,7 @@ class BlogService {
     }
 
     addBlog(body) {
-      // Object olduğu için dönüştürmeye gerek yok, logine bakılmadı
+        // Object olduğu için dönüştürmeye gerek yok, logine bakılmadı
         return fetch(ServiceConstants.BASEURL + ServiceConstants.BLOG, {
             method: ServiceConstants.POST,
             headers: {
@@ -47,7 +46,7 @@ class BlogService {
             body: JSON.stringify(body),
         }).then((res) => {
             console.log("STATUSCODE", res.status)
-            if (res.status == '200' ||res.status == '202') {
+            if (res.status == '200' || res.status == '202') {
                 console.log("TRUE DÖNDÜ")
                 return true;
             }
@@ -59,6 +58,31 @@ class BlogService {
             return false;
         });
 
+    }
+
+    likeBlog(data, blogID) {
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.BLOG + `/${blogID}` + ServiceConstants.LIKE, {
+            method: ServiceConstants.POST,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data),
+        }).then((res) => {
+            console.log("STATUSCODE", res.status)
+            if (res.status == '200') {
+                console.log("BEĞENDİN")
+                return res.status;
+            } else if (res.status == '202') {
+                console.log("BEĞENİLENLERDEN KALDIRDIN")
+                return res.status;
+            }
+            else {
+                return null;
+            }
+        }).catch(err => {
+            console.log("LİKE CATCH ", err)
+            return false;
+        });
     }
 
 

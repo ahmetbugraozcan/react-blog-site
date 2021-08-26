@@ -8,4 +8,5 @@ module.exports ={
     GET: 'GET',
     USER: '/user',
     LIKE: '/like',
+    COMMENT: '/comment'
 }

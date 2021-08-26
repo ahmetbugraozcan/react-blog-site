@@ -3,7 +3,7 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    min-height: 100vh;
+    min-height: 94vh;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -25,11 +25,19 @@
     margin-bottom: 50px;
 }
 
+.blog-detail-page-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+
 .blog-detail-page-content-wrapper {
     background-color: white;
     padding: 20px;
     display: flex;
-    width: 50%;
+    width: 100%;
     flex-direction: column;
     margin: 20px;
 }
@@ -58,3 +66,105 @@
     text-align: start;
     font-size: 18px;
 }
+
+.blog-detail-bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.blog-detail-divider {
+    margin-top: 20px;
+}
+
+.like-count-row {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.blog-detail-like-icon:hover {
+    cursor: pointer;
+}
+
+.blog-detail-like-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.blog-detail-comments-wrapper {
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+}
+
+.blog-form-row, .blog-comment-row {
+    display: flex;
+    width: 100%;
+}
+
+.comment-content-wrapper {
+    /* display: flex;
+    flex-direction: column; */
+    padding: 16px;
+    justify-content: start;
+    align-items: flex-start;
+    width: 100%;
+    border: 1px solid black;
+   
+    border-radius: 4px;
+}
+
+.blog-comment-row {
+    margin-top: 40px;
+}
+
+.blog-detail-comment-textarea {
+    width: 95%;
+    overflow-y: auto;
+    overflow-x: none;
+    resize: none;
+    padding: 10px;
+    border-radius: 4px;
+    height: 120px;
+    text-align: start;
+}
+
+.comments-header{
+    margin-bottom: 30px;
+    display: flex;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-header-row{
+    
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment-button {
+    margin-top: 10px !important;
+    background-color: #323ebe !important;
+    align-self: flex-start !important;
+}
+
+.comment-content {
+    margin-top: 10px;
+    text-align: start;
+}
+.blog-detail-avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding-right: 10px;
+}
+
+

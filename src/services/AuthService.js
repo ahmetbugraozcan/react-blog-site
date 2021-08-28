@@ -71,10 +71,23 @@ class AuthService {
         localStorage.removeItem("user");
     };
 
-
+    //düzeltilecek... Localstoragedeki idye göre user vs getirilebilir...
     getCurrentUser = () => {
         return JSON.parse(localStorage.getItem("user"));
     };
 
+    // getCurrentUser ()  {
+    //     console.log(JSON.parse(localStorage.getItem("user"))._id)
+    //     return this.getUser(JSON.parse(localStorage.getItem("user"))._id).then(res => {
+    //         if (res) {
+    //             // console.log(typeof JSON.parse(res))
+    //             return JSON.parse(res);
+    //         }
+    //         else {
+    //             return null;
+    //         }
+    //     })
+    //     // return JSON.parse(localStorage.getItem("user"));
+    // };
 }
 export default new AuthService();

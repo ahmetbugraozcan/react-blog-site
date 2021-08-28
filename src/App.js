@@ -17,7 +17,16 @@ import AddBlog from "./screens/AddBlog";
 class App extends Component {
     constructor(props) {
         super(props);
+
+        // AuthService.getCurrentUser().then(
+        //     res => {
+        //         if(res) {
+        //             this.props.UserStore.setUser(res);
+        //         }
+        //     }
+        // )
         var currentUser =  AuthService.getCurrentUser();
+        console.log("CURRENT : " , currentUser)
         if (currentUser != undefined) {
             this.props.UserStore.setUser(currentUser);
         } 

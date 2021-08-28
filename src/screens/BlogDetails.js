@@ -6,6 +6,7 @@ import { inject, observer } from "mobx-react";
 import { Link, useLocation } from "react-router-dom";
 import emptyheart from '../assets/icons/emptyheart.svg'
 import heart from '../assets/icons/heart.svg'
+import ribbon from '../assets/icons/ribbon.svg'
 import { stateToHTML } from "draft-js-export-html";
 import convertFromRawToDraftState from 'draft-js/lib/convertFromRawToDraftState';
 import { convertFromRaw } from 'draft-js';
@@ -32,6 +33,7 @@ const BlogDetails = inject("UserStore")(observer((props) => {
                     var blogRes = JSON.parse(res);
                     blogRes.isLiked = false;
                     blogRes.likes.forEach(like => {
+                        //filter kullanılabilir
                         if (like.likerID == props.UserStore.user?._id) {
                             blogRes.isLiked = true;
                         }
@@ -64,8 +66,7 @@ const BlogDetails = inject("UserStore")(observer((props) => {
         var commentValue = {
             comment: commentText,
             date: Date.now(),
-            commenterID: props.UserStore.user?._id,
-            commenterName: props.UserStore.user?.name,
+            commenter: props.UserStore.user
         }
         console.log(comment)
         CommentService.sendComment(blogID, commentValue).then(res => {
@@ -116,58 +117,77 @@ const BlogDetails = inject("UserStore")(observer((props) => {
             {error && <div>{error}</div>}
             {blog && (
 
-                <div className='blog-detail-wrapper-top'>
-                    <div className='blog-detail-page-body'>
-                        <div className="blog-detail-page-content-wrapper">
-                            <img src={`${blog.image}`} alt="blog-image" className="blog-detail-image" />
+                <div className='blog-detail-row'>
+                    <Link to={`../user/${blog.author._id}`} className='blog-user-sticky'>
+                        <img className='blog-detail-avatar' src={`${blog.author.profilePhotoUrl}`}></img>
+                        <div className='sticky-user-card-column'>
+                            <h3>{`Yazar`}</h3>
+                            <div>{`${blog.author.username}`}</div>
+                            <div>{`${blog.author.email}`}</div>
+                        </div>
+                    </Link>
+                    <div className='blog-detail-wrapper-top'>
+                        <div className='blog-detail-page-body'>
+                            <div className="blog-detail-page-content-wrapper">
+                                <img src={`${blog.image}`} alt="blog-image" className="blog-detail-image" />
 
-                            <div className='blog-detail-content'>{ReactHtmlParser(editorContent)}</div>
-                            <Divider style={{ marginTop: '20px' }} />
-                            <div className='blog-detail-bottom'>
-                                <div className='like-count-row'>
-                                    <p style={{ paddingRight: '5px' }}>{likeCount}</p>
-                                    {<img onClick={() => { likeBlog(blog._id) }} className='blog-detail-like-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />}
+                                <div className='blog-detail-content'>{ReactHtmlParser(editorContent)}</div>
+                                <Divider style={{ marginTop: '20px' }} />
+                                <div className='blog-detail-bottom'>
+                                    <div className='like-count-row'>
+                                        <p style={{ paddingRight: '5px' }}>{likeCount}</p>
+                                        {<img onClick={() => { likeBlog(blog._id) }} className='blog-detail-like-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />}
+                                    </div>
+
+                                    <div className='like-count-row'>
+                                        <p style={{ paddingRight: '5px' }}>{`0`}</p>
+                                        {<img className='blog-detail-like-icon' src={ribbon} alt="like-icon" />}
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-                        <div className='blog-detail-comments-wrapper'>
-                            <div>
-                                <h2 className='comments-header'>{`Yorumlar (${blog.comments.length})`}</h2>
-                                <div className='blog-form-row'>
-                                    <div>
-                                        <img className='blog-detail-avatar' src={`${props.UserStore.user.profilePhotoUrl}`}></img>
-                                    </div>
-                                    <div style={{ width: '100%' }}>
-                                        <form className='comment-form' onSubmit={(e) => {
-                                            e.preventDefault();
-                                            sendComment(blog._id, comment)
-                                        }}>
-                                            <textarea 
-                                            minLength='3' 
-                                            placeholder='Yorumunuzu Giriniz...' 
-                                            className='blog-detail-comment-textarea'
-                                            value={comment}
-                                            onChange={(e) => {setComment(e.target.value)}}
-                                            >
-                                            </textarea>
-                                            <Button className='comment-button' type='submit'><div style={{ color: 'white' }}>Yorum Yap</div></Button>
-                                        </form>
-                                    </div>
-                                </div>
-                                {blog.comments.length > 0 && blog.comments.map(comment => (
-                                    <div className='blog-comment-row'>
+                            <div className='blog-detail-comments-wrapper'>
+                                <div>
+                                    <h2 className='comments-header'>{`Yorumlar (${blog.comments.length})`}</h2>
+                                    <div className='blog-form-row'>
                                         <div>
                                             <img className='blog-detail-avatar' src={`${props.UserStore.user.profilePhotoUrl}`}></img>
                                         </div>
-                                        <div className='comment-content-wrapper'>
-                                            <div className='comment-header-row'>
-                                                <h4>{comment.commenterName}</h4>
-                                                <h5 style={{ color: 'gray' }}>{convertDateToReadableString(comment.date)}</h5>
-                                            </div>
-                                            <p className='comment-content'>{comment.comment}</p>
+                                        <div style={{ width: '100%' }}>
+                                            <form className='comment-form' onSubmit={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                sendComment(blog._id, comment)
+                                            }}>
+                                                <textarea
+                                                    minLength='3'
+                                                    placeholder='Yorumunuzu Giriniz...'
+                                                    className='blog-detail-comment-textarea'
+                                                    value={comment}
+                                                    onChange={(e) => { setComment(e.target.value) }}
+                                                >
+                                                </textarea>
+                                                <Button className='comment-button' type='submit'><div style={{ color: 'white' }}>Yorum Yap</div></Button>
+                                            </form>
                                         </div>
                                     </div>
-                                ))}
+                                    {blog.comments.length > 0 && blog.comments.map(comment => (
+                                        <div key={`${comment._id}`} className='blog-comment-row'>
+                                            <div>
+                                                <img className='blog-detail-avatar' src={`${props.UserStore.user.profilePhotoUrl}`}></img>
+                                            </div>
+                                            <div className='comment-content-wrapper'>
+                                                <div className='comment-header-row'>
+                                                    <Link to={`../user/${blog.author._id}`}>
+                                                        <h4 className='blog-detail-commenter-name'>{comment.commenter.name}</h4>
+                                                    </Link>
+                                                    <h5 style={{ color: 'gray' }}>{convertDateToReadableString(comment.date)}</h5>
+                                                </div>
+                                                <p className='comment-content'>{comment.comment}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>

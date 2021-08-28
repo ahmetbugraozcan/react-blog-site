@@ -8,6 +8,7 @@ import emptyheart from '../assets/icons/emptyheart.svg'
 import heart from '../assets/icons/heart.svg'
 import { FavoriteBorder } from "@material-ui/icons";
 import { stateToHTML } from "draft-js-export-html";
+import { convertDateToReadableString } from '../helpers/Utils';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 // const HomePage = inject("UserStore")(observer((props) => {    // const location = useLocation();
 //     // ${location.state?.user}
@@ -46,7 +47,7 @@ class HomePage extends React.Component {
                     }
                 })
             })
-          
+
             this.setState({ blogs: blogsRes })
             this.setState(this.state)
         })
@@ -74,51 +75,53 @@ class HomePage extends React.Component {
         return (
             <div className='blog-page-background'>
                 <div className='page-content-wrapper'>
-                    <div className='blog-grid'>
-                        {this.state.blogs && this.state.blogs.map((blog) => {
-                            return <Link key={blog._id} to={`/blog/${blog._id}`} >
-                                <div className='blog-card'>
-                                    <div className='blog-photo-wrapper'>
-                                        <img className='blog-photo' src={blog.image} alt='blog-image' />
-                                    </div>
-                                    <div className="blog-body">
-                                        <div className='blog-card-content-wrapper'>
-                                            <p className='blog-content-header'>{blog.title}</p>
-                                            <div className="blog-content-container">
-                                                {/* <div className='blog-content'>{ReactHtmlParser(stateToHTML(convertFromRaw(blog.content))) */}
-                                                <div className='blog-content'>{blog.previewSubtitle
-                                                }</div>
-                                            </div>
-                                            <Divider></Divider>
+                    {this.state.blogs.length > 0 ?
+                        <div className='blog-grid'>
+                            {this.state.blogs && this.state.blogs.map((blog) => {
+                                return <Link key={blog._id} to={`/blog/${blog._id}`} >
+                                    <div className='blog-card'>
+                                        <div className='blog-photo-wrapper'>
+                                            <img className='blog-photo' src={blog.image} alt='blog-image' />
                                         </div>
-                                        <div className='blog-footer'>
-                                            <div className='blog-footer-icon-container'>
-                                                <div className='blog-icon-row'>
-                                                    <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/709/709612.png" alt="view-icon" />
-                                                    <div className='blog-icon-row-text'>{blog.numberOfView}</div>
+                                        <div className="blog-body">
+                                            <div className='blog-card-content-wrapper'>
+                                                <p className='blog-content-header'>{blog.title}</p>
+                                                <div className="blog-content-container">
+                                                    {/* <div className='blog-content'>{ReactHtmlParser(stateToHTML(convertFromRaw(blog.content))) */}
+                                                    <div className='blog-content'>{blog.previewSubtitle
+                                                    }</div>
                                                 </div>
-                                                <div className='blog-icon-row'>
-                                                    <img className='blog-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />
-                    {/* {<img onClick={() => { likeBlog(blog._id) }} className='like-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />} */}
-
-                                                    <div className='blog-icon-row-text'>{blog.likes.length}</div>
-                                                </div>
-                                                <div className='blog-icon-row'>
-                                                    <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/54/54761.png" alt="comment-icon" />
-                                                    <div className='blog-icon-row-text'>{blog.comments.length}</div>
-                                                </div>
+                                                <Divider></Divider>
                                             </div>
-                                            <div className='blog-footer-date-container'>
-                                                {blog.createdDate}
+                                            <div className='blog-footer'>
+                                                <div className='blog-footer-icon-container'>
+                                                    <div className='blog-icon-row'>
+                                                        <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/709/709612.png" alt="view-icon" />
+                                                        <div className='blog-icon-row-text'>{blog.numberOfView}</div>
+                                                    </div>
+                                                    <div className='blog-icon-row'>
+                                                        <img className='blog-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />
+                                                        {/* {<img onClick={() => { likeBlog(blog._id) }} className='like-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />} */}
+
+                                                        <div className='blog-icon-row-text'>{blog.likes.length}</div>
+                                                    </div>
+                                                    <div className='blog-icon-row'>
+                                                        <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/54/54761.png" alt="comment-icon" />
+                                                        <div className='blog-icon-row-text'>{blog.comments.length}</div>
+                                                    </div>
+                                                </div>
+                                                <div className='blog-footer-date-container'>
+                                                    {convertDateToReadableString(blog.createdDate)}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Link>
-                        })
-                        }
+                                </Link>
+                            })
+                            }
 
-                    </div>
+                        </div> :
+                        <div className="empty-home-page-wrapper">{"HENÜZ BİR BLOG EKLENMEMİŞ."}</div>}
                 </div>
             </div>
         )

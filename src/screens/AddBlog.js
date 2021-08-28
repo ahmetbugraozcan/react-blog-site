@@ -45,8 +45,7 @@ class AddBlog extends React.Component {
             previewSubtitle: this.state.previewSubtitle,
             content: contentRaw,
             image: this.state.image,
-            authorName: this.props.UserStore.user.username,
-            authorID: this.props.UserStore.user._id,
+            author: this.props.UserStore.user
         }
         // Api request here
         // setIsPending(true);

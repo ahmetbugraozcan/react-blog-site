@@ -7,6 +7,7 @@ export class UserStore {
     }
 
     setUser(value) {
+        console.log("VALUE : " , value);
         this.user = value;
     }
     setUsername(value) {

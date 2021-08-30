@@ -85,6 +85,31 @@ class BlogService {
         });
     }
 
+    bookmarkBlog(data, blogID) {
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.BLOG + `/${blogID}` + ServiceConstants.BOOKMARK, {
+            method: ServiceConstants.POST,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data),
+        }).then((res) => {
+            console.log("STATUSCODE", res.status)
+            if (res.status == '200') {
+                console.log("KAYDETTİN")
+                return res.status;
+            } else if (res.status == '202') {
+                console.log("KAYDEDİLENLERDEN KALDIRDIN")
+                return res.status;
+            }
+            else {
+                return null;
+            }
+        }).catch(err => {
+            console.log("BOOKMARK CATCH ", err)
+            return false;
+        });
+    }
+
 
 
 

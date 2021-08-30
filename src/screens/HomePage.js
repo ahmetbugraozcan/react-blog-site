@@ -28,14 +28,9 @@ class HomePage extends React.Component {
             blogs: [],
         }
         // console.log(props.UserStore.user)
-        this.loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
-            ' Donec convallis lectus vitae tellus placerat lacinia eu ut dolor. Proin fermentum lectus nec felis consectetur, ut ullamcorper purus maximus. Aenean laoreet nulla non neque consequat vestibulum. Curabitur sagittis, velit vel pretium bibendum, felis orci semper enim, sit amet egestas urna dui ut nisi. Duis id vestibulum odio. Aliquam sed metus bibendum, lobortis sapien in, pharetra mi. Proin in imperdiet mi, nec ornare neque. Vestibulum euismod lectus lacus, quis venenatis ligula volutpat sed. Duis in pharetra nisi, eget interdum urna. Phasellus at pellentesque urna. Nulla libero augue, vehicula vitae aliquam pretium, commodo vel mauris. Nam leo odio, suscipit id mi a, ullamcorper facilisis metus. Etiam eu metus purus. Curabitur vitae purus nisl'
-            + 'Vivamus posuere id lacus sit amet laoreet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse vulputate turpis justo, a efficitur neque tincidunt id. Maecenas at est eget libero feugiat tempus eu quis sem. Mauris ac mi vitae mi imperdiet tincidunt. Sed eget lacus et quam congue dapibus. Morbi pretium mattis enim, a sagittis neque vulputate quis. Nulla nunc ipsum, tincidunt id risus rutrum, semper finibus augue. Etiam pretium, leo vitae efficitur viverra, nisi nibh viverra metus, at sodales nisi mauris at dui.';
-        this.loremIpsum2 = ' Donec convallis lectus vitae tellus placerat lacinia eu ut dolor. Proin fermentum lectus nec felis consectetur, ut ullamcorper purus maximus. Aenean laoreet nulla non neque consequat vestibulum. Curabitur sagittis, velit vel pretium bibendum, felis orci semper enim, sit amet egestas urna dui ut nisi. Duis id vestibulum odio. Aliquam sed metus bibendum, lobortis sapien in, pharetra mi. Proin in imperdiet mi, nec ornare neque. Vestibulum euismod lectus lacus, quis venenatis ligula volutpat sed. Duis in pharetra nisi, eget interdum urna. Phasellus at pellentesque urna. Nulla libero augue, vehicula vitae aliquam pretium, commodo vel mauris. Nam leo odio, suscipit id mi a, ullamcorper facilisis metus. Etiam eu metus purus. Curabitur vitae purus nisl'
-
-            + 'Vivamus posuere id lacus sit amet laoreet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse vulputate turpis justo, a efficitur neque tincidunt id. Maecenas at est eget libero feugiat tempus eu quis sem. Mauris ac mi vitae mi imperdiet tincidunt. Sed eget lacus et quam congue dapibus. Morbi pretium mattis enim, a sagittis neque vulputate quis. Nulla nunc ipsum, tincidunt id risus rutrum, semper finibus augue. Etiam pretium, leo vitae efficitur viverra, nisi nibh viverra metus, at sodales nisi mauris at dui.';
     }
     componentDidMount() {
+        this.setState({isLoading:true})
         BlogService.getBlogs().then((res) => {
             var blogsRes = JSON.parse(res);
             blogsRes.forEach(blogRes => {
@@ -50,6 +45,7 @@ class HomePage extends React.Component {
 
             this.setState({ blogs: blogsRes })
             this.setState(this.state)
+            this.setState({isLoading:false})
         })
 
     }
@@ -75,7 +71,7 @@ class HomePage extends React.Component {
         return (
             <div className='blog-page-background'>
                 <div className='page-content-wrapper'>
-                    {this.state.blogs.length > 0 ?
+                    {this.state.isLoading ? <h1>LOADING</h1> : this.state.blogs.length > 0 ?
                         <div className='blog-grid'>
                             {this.state.blogs && this.state.blogs.map((blog) => {
                                 return <Link key={blog._id} to={`/blog/${blog._id}`} >

@@ -4,6 +4,7 @@ import './styles/index.css';
 import './styles/blog-card.css'
 import './styles/add-blog.css'
 import './styles/blog-detail-page.css'
+import './styles/user-details-page.css'
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';

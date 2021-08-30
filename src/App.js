@@ -26,7 +26,7 @@ class App extends Component {
         //     }
         // )
         var currentUser =  AuthService.getCurrentUser();
-        console.log("CURRENT : " , currentUser)
+        // console.log("CURRENT : " , currentUser)
         if (currentUser != undefined) {
             this.props.UserStore.setUser(currentUser);
         } 
@@ -52,7 +52,7 @@ class App extends Component {
                             <Route exact path="/blog/:id">
                                 <BlogDetails />
                             </Route> 
-                            <Route exact path="/user/:id">
+                            <Route exact path="/user/:username">
                                 <UserDetails />
                             </Route> 
                             <Route path="/add-blog">

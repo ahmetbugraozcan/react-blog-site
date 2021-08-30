@@ -4,8 +4,8 @@ import { inject, observer } from "mobx-react";
 
 class AuthService {
 
-    getUser(id){
-        return fetch(ServiceConstants.BASEURL + ServiceConstants.USER + `/${id}`, {
+    getUser(username){
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.USER + `/${username}`, {
             method: ServiceConstants.GET,
         }).then((res) => {
             console.log("STATUSCODE", res.status)

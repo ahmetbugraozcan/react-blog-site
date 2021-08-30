@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import emptyheart from '../assets/icons/emptyheart.svg'
 import heart from '../assets/icons/heart.svg'
 import ribbon from '../assets/icons/ribbon.svg'
+import bookmark from '../assets/icons/bookmark.svg'
 import { stateToHTML } from "draft-js-export-html";
 import convertFromRawToDraftState from 'draft-js/lib/convertFromRawToDraftState';
 import { convertFromRaw } from 'draft-js';
@@ -25,17 +26,27 @@ const BlogDetails = inject("UserStore")(observer((props) => {
     const [error, setError] = useState(null);
     const [editorContent, setEditorContent] = useState(null);
     const [likeCount, setLikeCount] = useState(0);
+    const [bookmarkCount, setBookmarkCount] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         BlogService.getBlog(id).then((res) => {
             {
                 if (res) {
                     var blogRes = JSON.parse(res);
                     blogRes.isLiked = false;
+                    blogRes.isBookmarked = false;
                     blogRes.likes.forEach(like => {
                         //filter kullanılabilir
                         if (like.likerID == props.UserStore.user?._id) {
                             blogRes.isLiked = true;
+                        }
+                    })
+                    blogRes.bookmarkedUserIDs.forEach(bookmarkedUserID => {
+                        //filter kullanılabilir
+                        if (bookmarkedUserID == props.UserStore.user?._id) {
+                            blogRes.isBookmarked = true;
                         }
                     })
                     setBlog(blogRes);
@@ -45,10 +56,14 @@ const BlogDetails = inject("UserStore")(observer((props) => {
                     setEditorContent(editorContent)
                     setIsPending(false);
                     setLikeCount(blogRes.likes.length)
+                    setBookmarkCount(blogRes.bookmarkedUserIDs.length)
                 }
             }
+            setLoading(false);
         }
         )
+
+
         // fetch("/blog/").then(
         //     res => setState(res.data)
         // )
@@ -63,51 +78,94 @@ const BlogDetails = inject("UserStore")(observer((props) => {
     //     });
     //  }
     const sendComment = (blogID, commentText) => {
+        if (!loading) {
+            setLoading(true);
+            
         var commentValue = {
             comment: commentText,
             date: Date.now(),
             commenter: props.UserStore.user
         }
-        console.log(comment)
-        CommentService.sendComment(blogID, commentValue).then(res => {
-            if (res) {
-                blog.comments.push(commentValue)
-                setBlog(blog)
-            }
-            else {
-                console.log("YORUM EKLEME BAŞARISIZ...")
-                alert("Yorum eklerken bir sorun oluştu...")
-            }
-        })
+            CommentService.sendComment(blogID, commentValue).then(res => {
+                if (res) {
+                    blog.comments.push(commentValue)
+                    setBlog(blog)
+                }
+                else {
+                    console.log("YORUM EKLEME BAŞARISIZ...")
+                    alert("Yorum eklerken bir sorun oluştu...")
+                }
+                setLoading(false);
+            })
+        }
+
 
     }
 
     const likeBlog = (blogID) => {
-        var like = {
-            blog: blogID,
-            likerID: props.UserStore.user?._id,
-        }
-        BlogService.likeBlog(like, blogID).then(res => {
-            if (res) {
-                //setblogda bi gariplik var gibi ama çalışıyor şimdilik 
-                if (res == '202') {
-                    setBlog({ ...blog, isLiked: false })
-                    var count = likeCount - 1;
-                    setLikeCount(count)
-                } else if (res == '200') {
-                    setBlog({ ...blog, isLiked: true });
-                    var count = likeCount + 1;
-                    setLikeCount(count)
-                    // setLikeCount(likeCount++)
-                }
-            } else {
-                //giriş yapması falan gerekiyor işte buraları ona göre ayarlayalım
-                alert("Bir hata oluştu...")
+        if (!loading) {
+            setLoading(true);
+            var like = {
+                blog: blogID,
+                likerID: props.UserStore.user?._id,
             }
-        }).catch(e => {
-            alert("Bir hata oluştu...")
-            console.log(e);
-        });
+            BlogService.likeBlog(like, blogID).then(res => {
+                if (res) {
+                    //setblogda bi gariplik var gibi ama çalışıyor şimdilik 
+                    if (res == '202') {
+                        setBlog({ ...blog, isLiked: false })
+                        var count = likeCount - 1;
+                        setLikeCount(count)
+                    } else if (res == '200') {
+                        setBlog({ ...blog, isLiked: true });
+                        var count = likeCount + 1;
+                        setLikeCount(count)
+                        // setLikeCount(likeCount++)
+                    }
+                } else {
+                    //giriş yapması falan gerekiyor işte buraları ona göre ayarlayalım
+                    alert("Bir hata oluştu...")
+                }
+                setLoading(false);
+            }).catch(e => {
+                setLoading(false);
+                alert("Bir hata oluştu...")
+                console.log(e);
+
+            });
+        }
+
+    }
+
+    const bookmarkBlog = (blogID) => {
+        if (!loading) {
+            var bookmark = {
+                blog: blog,
+                bookmarkedUserID: props.UserStore.user?._id,
+            }
+            setLoading(true);
+            BlogService.bookmarkBlog(bookmark, blogID).then(res => {
+                if (res) {
+                    if (res == '202') {
+                        var count = bookmarkCount - 1;
+                        setBlog({ ...blog, isBookmarked: false })
+                        setBookmarkCount(count)
+                    } else if (res == '200') {
+                        setBlog({ ...blog, isBookmarked: true });
+                        var count = bookmarkCount + 1;
+                        setBookmarkCount(count)
+                    }
+                } else {
+                    //giriş yapması falan gerekiyor işte buraları ona göre ayarlayalım
+                    alert("Bir hata oluştu...")
+                }
+                setLoading(false);
+            }).catch(e => {
+                setLoading(false);
+                alert("Bir hata oluştu...")
+                console.log(e);
+            })
+        };
     }
 
 
@@ -118,13 +176,18 @@ const BlogDetails = inject("UserStore")(observer((props) => {
             {blog && (
 
                 <div className='blog-detail-row'>
-                    <Link to={`../user/${blog.author._id}`} className='blog-user-sticky'>
-                        <img className='blog-detail-avatar' src={`${blog.author.profilePhotoUrl}`}></img>
-                        <div className='sticky-user-card-column'>
+                    <Link to={`../user/${blog.author.username}`} className='blog-user-sticky'>
+                        <img className='blog-detail-user-card-avatar' src={`${blog.author.profilePhotoUrl}`}></img>
+                        <div className='blog-detail-name-field'>
+                            <h2 className='blog-detail-name'>{`${blog.author.name}`}</h2>
+                            <h4 className='blog-detail-username'>{`@${blog.author.username}`}</h4>
+                        </div>
+                        <Button style={{ marginTop: "10px" }}>Takip Et</Button>
+                        {/* <div className='sticky-user-card-column'>
                             <h3>{`Yazar`}</h3>
                             <div>{`${blog.author.username}`}</div>
                             <div>{`${blog.author.email}`}</div>
-                        </div>
+                        </div> */}
                     </Link>
                     <div className='blog-detail-wrapper-top'>
                         <div className='blog-detail-page-body'>
@@ -140,8 +203,8 @@ const BlogDetails = inject("UserStore")(observer((props) => {
                                     </div>
 
                                     <div className='like-count-row'>
-                                        <p style={{ paddingRight: '5px' }}>{`0`}</p>
-                                        {<img className='blog-detail-like-icon' src={ribbon} alt="like-icon" />}
+                                        <p style={{ paddingRight: '5px' }}>{bookmarkCount}</p>
+                                        {<img onClick={() => { bookmarkBlog(blog._id) }} className='blog-detail-like-icon' src={blog.isBookmarked ? bookmark : ribbon} alt="like-icon" />}
                                     </div>
 
                                 </div>

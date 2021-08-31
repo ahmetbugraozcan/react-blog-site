@@ -10,4 +10,5 @@ module.exports ={
     LIKE: '/like',
     COMMENT: '/comment',
     BOOKMARK: '/bookmark',    
+    LIKEDPOSTS: '/likedPosts',
 }

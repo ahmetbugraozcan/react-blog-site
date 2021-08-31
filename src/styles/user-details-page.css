@@ -1,10 +1,9 @@
 .user-details-page-background {
     display: flex;
     justify-content: center;
-    align-items: center;
-    position: fixed;
     width: 100%;
     height: 100%;
+    min-height: 94vh;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -15,13 +14,13 @@
     position: relative;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .user-detail-content-wrapper {
     margin-top: 5%;
-    width: 80vw;
-    height: 50vh;
+    width: 60vw;
+    height: 250px;
     justify-content: center;
     background-color: white;
     border: 1px solid rgb(194, 191, 191);
@@ -35,8 +34,113 @@
 }
 
 .user-detail-profile-photo {
-   
     border-radius: 50%;
-    width: 100px; height: 100px;
-    transform: translateY(-50%); /* additional 50% of own height */
-  }
+    width: 120px;
+    height: 120px;
+}
+
+.user-detail-name-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-detail-content-body {
+    transform: translateY(-12%);
+}
+
+.user-detail-followers-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.user-detail-liked-blogs {
+    display: flex;
+    overflow-x: scroll;
+    width: 60vw;
+    margin-top: 50px;
+    border: 1px solid rgb(194, 191, 191);
+    border-radius: 12px;
+    height: 300px;
+    padding: 10px;
+}
+
+.user-detail-page-body-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.user-detail-liked-blog-card:hover{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transform: scale(0.98);
+}
+ .user-detail-liked-blog-card {
+    background-color: white;
+    margin-left: 10px;
+    overflow: hidden;
+    border-radius: 16px;
+    position: relative;
+    width: 40%;
+    height: 100%;
+    cursor: pointer;
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.user-detail-liked-blog-card-image-wrapper {
+    height: 50%;
+}
+
+.user-detail-liked-blog-card-image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.user-detail-liked-blog-card-header {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.user-detail-liked-blog-card-blog {
+    display: block;
+    min-height: 100%;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.user-detail-liked-blog-card-container {
+    color: rgb(83, 83, 83);
+    font-size: 16px;
+    font-style: normal;
+    line-height: 20px;
+    margin: 12px 0px;
+    height: 100px;
+    padding: 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+.user-detail-liked-blog-card-content-wrapper {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    overflow: hidden;
+}
+
+
+/*.user-detail-liked-blog-card:hover{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transform: translateY(-6px);
+} */
+

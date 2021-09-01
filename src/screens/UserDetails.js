@@ -18,6 +18,7 @@ const UserDetails = inject("UserStore")(observer((props) => {
     const [error, setError] = useState(null);
     const [isMyProfile, setIsMyProfile] = useState(false);
     const [likedBlogs, setLikedBlogs] = useState([])
+    const [bookmarkedBlogs, setBookmarkedBlogs] = useState([])
 
     const GoToBlog = (blogID) => {
         console.log(history)
@@ -27,10 +28,25 @@ const UserDetails = inject("UserStore")(observer((props) => {
     }
 
     function getLikedBlogs(userID) {
+        setIsPending(true);
         BlogService.getLikedBlogs(userID).then(res => {
             if (res) {
                 setLikedBlogs(JSON.parse(res));
             }
+            setIsPending(false);
+
+        })
+    }
+
+
+    function getBookmarkedBlogs(userID) {
+        setIsPending(true);
+
+        BlogService.getBookmarkedBlogs(userID).then(res => {
+            if (res) {
+                setBookmarkedBlogs(JSON.parse(res));
+            }
+            setIsPending(false);
         })
     }
 
@@ -55,6 +71,7 @@ const UserDetails = inject("UserStore")(observer((props) => {
                 }
             }
             getLikedBlogs(JSON.parse(res)._id);
+            getBookmarkedBlogs(JSON.parse(res)._id);
             setIsPending(false);
         })
 
@@ -82,42 +99,52 @@ const UserDetails = inject("UserStore")(observer((props) => {
                             </div>
                         </div>
                     </div>
-                    <div className='user-detail-liked-blogs'>
-                        {likedBlogs && likedBlogs.map(blog => (
-                            <div key={blog._id} className="user-detail-liked-blog-card" onClick={(e) => {
-                                e.preventDefault()
-                                GoToBlog(blog._id)
-                            }}>
-                                <div className='user-detail-liked-blog-card-image-wrapper'>
-                                    <img className='user-detail-liked-blog-card-image' src={blog.image} alt='blog-image' />
-                                </div>
-                                <div className='user-detail-liked-blog-card-content-wrapper'>
-                                    <p className='user-detail-liked-blog-card-header'>{blog.title}</p>
-                                    <div className="user-detail-liked-blog-card-container">
-                                        <div className='user-detail-liked-blog-card-blog-content'>{blog.previewSubtitle
-                                        }</div>
+
+                    <div className='user-detail-liked-blogs-wrapper'>
+                        <h3 style={{ marginBottom: '10px' }}>Beğenilen Bloglar</h3>
+                        <div className='user-detail-liked-blogs'>
+                            {likedBlogs && likedBlogs.map(blog => (
+                                <div key={blog._id} className="user-detail-liked-blog-card" onClick={(e) => {
+                                    e.preventDefault()
+                                    GoToBlog(blog._id)
+                                }}>
+                                    <div className='user-detail-liked-blog-card-image-wrapper'>
+                                        <img className='user-detail-liked-blog-card-image' src={blog.image} alt='blog-image' />
+                                    </div>
+                                    <div className='user-detail-liked-blog-card-content-wrapper'>
+                                        <p className='user-detail-liked-blog-card-header'>{blog.title}</p>
+                                        <div className="user-detail-liked-blog-card-container">
+                                            <div className='user-detail-liked-blog-card-blog-content'>{blog.previewSubtitle
+                                            }</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* <div className='user-detail-content-container'>
-                    <div className='user-detail-content-wrapper'>
-                        <div className='user-detail-content-body'>
-                            <img className='user-detail-profile-photo' src={props.UserStore.user.profilePhotoUrl} />
-                            <div className='user-detail-name-container'>
-                                <h1>{props.UserStore.user.name}</h1>
-                                <h4>@{props.UserStore.user.username}</h4>
-                                <div className='user-detail-followers-row'>
-                                    <p>10 <br /> Takipçi</p>
-                                    <p>20 <br />Takip Edilen</p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
-                </div> */}
+                    <div className='user-detail-liked-blogs-wrapper'>
+                        <h3 style={{ marginBottom: '10px' }}>Kaydedilen Bloglar</h3>
+                        <div className='user-detail-liked-blogs'>
+                            {bookmarkedBlogs && bookmarkedBlogs.map(blog => (
+                                <div key={blog._id} className="user-detail-liked-blog-card" onClick={(e) => {
+                                    e.preventDefault()
+                                    GoToBlog(blog._id)
+                                }}>
+                                    <div className='user-detail-liked-blog-card-image-wrapper'>
+                                        <img className='user-detail-liked-blog-card-image' src={blog.image} alt='blog-image' />
+                                    </div>
+                                    <div className='user-detail-liked-blog-card-content-wrapper'>
+                                        <p className='user-detail-liked-blog-card-header'>{blog.title}</p>
+                                        <div className="user-detail-liked-blog-card-container">
+                                            <div className='user-detail-liked-blog-card-blog-content'>{blog.previewSubtitle
+                                            }</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         // <div>

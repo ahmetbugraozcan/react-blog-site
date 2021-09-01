@@ -57,16 +57,17 @@
     width: 100%;
     margin-top: 10px;
 }
+/* .user-detail-liked-blogs>::-webkit-scrollbar-thumb{
+    background: red;
+} */
 
 .user-detail-liked-blogs {
     display: flex;
     overflow-x: scroll;
     width: 60vw;
-    margin-top: 50px;
     border: 1px solid rgb(194, 191, 191);
     border-radius: 12px;
     height: 300px;
-    padding: 10px;
 }
 
 .user-detail-page-body-wrapper {
@@ -83,11 +84,13 @@
  .user-detail-liked-blog-card {
     background-color: white;
     margin-left: 10px;
+    margin: 1%;
     overflow: hidden;
     border-radius: 16px;
     position: relative;
-    width: 40%;
-    height: 100%;
+    min-width: 38%;
+    width: 38%;
+    height: 90%;
     cursor: pointer;
     transition: transform 0.4s, box-shadow 0.4s;
 }
@@ -138,6 +141,12 @@
     overflow: hidden;
 }
 
+.user-detail-liked-blogs-wrapper {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
 /*.user-detail-liked-blog-card:hover{
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);

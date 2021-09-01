@@ -124,6 +124,20 @@ class BlogService {
         })
     }
 
+    getBookmarkedBlogs(userID){
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.BLOG + `/${userID}` + ServiceConstants.BOOKMARKEDBLOGS, {
+            method: ServiceConstants.GET
+        }).then((res) => {
+            if(res.status == '404') {
+                console.log("404 NOT FOUND LIKEDBLOGS");
+                return null;
+            }
+            else {
+                return res.text();
+            }
+        })
+    }
+
 
 
 

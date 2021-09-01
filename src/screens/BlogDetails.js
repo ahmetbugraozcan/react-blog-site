@@ -44,9 +44,11 @@ const BlogDetails = inject("UserStore")(observer((props) => {
                         }
                     })
                     blogRes.bookmarkedUserIDs.forEach(bookmarkedUserID => {
+                        console.log(bookmarkedUserID)
                         //filter kullanılabilir
                         if (bookmarkedUserID == props.UserStore.user?._id) {
                             blogRes.isBookmarked = true;
+                            console.log("BURAYA GİRDİK")
                         }
                     })
                     setBlog(blogRes);
@@ -77,6 +79,7 @@ const BlogDetails = inject("UserStore")(observer((props) => {
     //         history.push('/');
     //     });
     //  }
+
     const sendComment = (blogID, commentText) => {
         if (!loading) {
             setLoading(true);
@@ -134,7 +137,6 @@ const BlogDetails = inject("UserStore")(observer((props) => {
 
             });
         }
-
     }
 
     const bookmarkBlog = (blogID) => {

@@ -18,6 +18,7 @@
 }
 
 .user-detail-content-wrapper {
+    position: relative;
     margin-top: 5%;
     width: 60vw;
     height: 250px;
@@ -27,6 +28,30 @@
     border-radius: 12px;
     display: flex;
 }
+
+.user-detail-top-right-corner {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+.user-detail-top-right-corner-button {
+    background-color: #323ebe !important;
+}
+
+.user-detail-not-found-text {
+    font-size: 24px;
+}
+
+.user-detail-not-found-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    align-self: center;
+    width: 100%;
+}
+
 
 .user-detail-content-container {
     justify-content: center;
@@ -67,7 +92,7 @@
     width: 60vw;
     border: 1px solid rgb(194, 191, 191);
     border-radius: 12px;
-    height: 300px;
+    height: 350px;
 }
 
 .user-detail-page-body-wrapper {
@@ -88,8 +113,8 @@
     overflow: hidden;
     border-radius: 16px;
     position: relative;
-    min-width: 38%;
-    width: 38%;
+    min-width: 35%;
+    width: 35%;
     height: 90%;
     cursor: pointer;
     transition: transform 0.4s, box-shadow 0.4s;

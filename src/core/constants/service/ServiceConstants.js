@@ -11,5 +11,10 @@ module.exports ={
     COMMENT: '/comment',
     BOOKMARK: '/bookmark',    
     LIKEDPOSTS: '/likedPosts',
-    BOOKMARKEDBLOGS:'/bookmarkedPosts'
+    BOOKMARKEDBLOGS:'/bookmarkedPosts',
+    USER: '/user',
+    FOLLOW: '/follow',
+    FOLLOWERS: '/followers',
+    FOLLOWEDUSERS: '/followedUsers',
+
 }

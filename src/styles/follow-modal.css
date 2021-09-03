@@ -1,0 +1,85 @@
+.follow-modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    min-width: 400px;
+    width: 40%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+.follow-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.follow-modal-user-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    border-radius: 6px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.follow-modal-user-card:hover {
+    transform: scale(0.98);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.follow-modal-user-card-avatar {
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 10px;
+}
+
+.follow-modal-user-name-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.follow-modal-header {
+    display: flex;
+    justify-content: space-between;
+    min-height: 30px;
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.follow-modal-user-username-text {
+    color: grey;
+}
+
+.follow-modal-user-user-text {
+    color: black;
+}
+
+.follow-modal-user-card-row-body {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.follow-modal-user-follow-button {
+    background-color: #323ebe !important;
+    margin-right: 10px !important;
+}
+
+.follow-modal-user-not-following-anyone {
+    margin: 16px;
+    font-size: 24px;
+    align-self: center;
+}

@@ -15,7 +15,6 @@ import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from
 import { Button, Divider } from "@material-ui/core";
 import CommentService from '../services/CommentService';
 import { convertDateToReadableString } from '../helpers/Utils';
-import { Delete } from '@material-ui/icons';
 
 
 const BlogDetails = inject("UserStore")(observer((props) => {
@@ -28,7 +27,11 @@ const BlogDetails = inject("UserStore")(observer((props) => {
     const [likeCount, setLikeCount] = useState(0);
     const [bookmarkCount, setBookmarkCount] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [isMyBlog, setIsMyBlog] = useState(null);
+    const [isFollowingBlogAuthor, setIsFollowingBlogAuthor] = useState(null);
 
+    //böyle düzgün çalışmıyor. Bir kez blogu kaydedince user bilgilerini de 
+    //kaydetmişiz ama hep eski bilgiler. o yüzden blogu getirince id ile userı da getirmemiz gerekiyor.
     useEffect(() => {
         setLoading(true);
         BlogService.getBlog(id).then((res) => {
@@ -51,6 +54,10 @@ const BlogDetails = inject("UserStore")(observer((props) => {
                             console.log("BURAYA GİRDİK")
                         }
                     })
+                    
+                    // blogRes.author.followers.forEach(follower => {
+                    //     console.log("follower : " , follower);
+                    // })
                     setBlog(blogRes);
                     console.log("BLOG İLK DEĞER : ", blogRes)
                     var raw = convertFromRaw(blogRes.content)
@@ -83,12 +90,12 @@ const BlogDetails = inject("UserStore")(observer((props) => {
     const sendComment = (blogID, commentText) => {
         if (!loading) {
             setLoading(true);
-            
-        var commentValue = {
-            comment: commentText,
-            date: Date.now(),
-            commenter: props.UserStore.user
-        }
+
+            var commentValue = {
+                comment: commentText,
+                date: Date.now(),
+                commenter: props.UserStore.user
+            }
             CommentService.sendComment(blogID, commentValue).then(res => {
                 if (res) {
                     blog.comments.push(commentValue)
@@ -184,7 +191,10 @@ const BlogDetails = inject("UserStore")(observer((props) => {
                             <h2 className='blog-detail-name'>{`${blog.author.name}`}</h2>
                             <h4 className='blog-detail-username'>{`@${blog.author.username}`}</h4>
                         </div>
-                        <Button style={{ marginTop: "10px" }}>Takip Et</Button>
+                        {
+                            blog.author._id !== props.UserStore.user._id &&
+                                <Button style={{ marginTop: "10px" }}>Takip Et</Button>
+                        }
                         {/* <div className='sticky-user-card-column'>
                             <h3>{`Yazar`}</h3>
                             <div>{`${blog.author.username}`}</div>

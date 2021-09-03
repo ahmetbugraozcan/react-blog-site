@@ -12,6 +12,8 @@ import { Button } from '@material-ui/core';
 import { Settings } from '@material-ui/icons';
 import IconButton from 'material-ui/IconButton';
 import UserService from '../services/UserService';
+import FollowModal from '../components/modal/FollowModal'
+import SettingsModal from '../components/modal/SettingsModal'
 
 //Bu kişinin parolası gelmemesi gerekiyor kullanıcı detayları için başka bir sorgu yapabiliriz
 const UserDetails = inject("UserStore")(observer((props) => {
@@ -19,6 +21,9 @@ const UserDetails = inject("UserStore")(observer((props) => {
     const { username } = useParams();
     const [user, setUser] = useState(null);
     const [isPending, setIsPending] = useState(false);
+    const [isFollowerModalOpen, setIsFollowerModalOpen] = useState(false);
+    const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+    const [isFollowedUsersModalOpen, setIsFollowedUsersModalOpen] = useState(false);
     const [isBookmarkedBlogsPending, setIsBookmarkedBlogsPending] = useState(false);
     const [isLikedBlogsPending, setIsLikedBlogsPending] = useState(false);
     const [error, setError] = useState(null);
@@ -93,6 +98,17 @@ const UserDetails = inject("UserStore")(observer((props) => {
         })
     }
 
+    const closeFollowerModal = () => {
+        setIsFollowerModalOpen(false)
+    }
+
+    const closeSettingsModal = () => {
+        setIsSettingsModalOpen(false)
+    }
+
+    const closeFollowedUsersModal = () => {
+        setIsFollowedUsersModalOpen(false)
+    }
 
     function getBookmarkedBlogs(userID) {
         setIsBookmarkedBlogsPending(true);
@@ -106,7 +122,9 @@ const UserDetails = inject("UserStore")(observer((props) => {
     }
 
     useEffect(() => {
-        console.log("buraya girdik")
+        setIsFollowerModalOpen(false);
+        setIsFollowedUsersModalOpen(false);
+        setIsSettingsModalOpen(false);
         AuthService.getUser(username).then((res) => {
             {
                 setIsPending(true)
@@ -135,9 +153,9 @@ const UserDetails = inject("UserStore")(observer((props) => {
                     getFollowedUsers(userRes.username);
                 }
             }
-   
+
             setIsPending(false);
-           
+
         });
 
 
@@ -150,6 +168,34 @@ const UserDetails = inject("UserStore")(observer((props) => {
             <div className='user-details-page-background'>
                 <div className='user-details-page-content-wrapper'>
                     <div className='user-detail-page-body-wrapper'>
+                        <div>
+                            {
+                                isSettingsModalOpen && !isFollowedUsersModalOpen && !isFollowerModalOpen && props.UserStore.user &&
+                                <SettingsModal
+                                onClose={closeSettingsModal}
+                                />
+                            }
+                            {
+                                isFollowerModalOpen && !isFollowedUsersModalOpen && !isSettingsModalOpen && props.UserStore.user &&
+                                <FollowModal
+                                    modalType='followers'
+                                    header='Takipçiler'
+                                    onClose={closeFollowerModal}
+                                    currentUser={props.UserStore.user}
+                                    followers={user && user.followers}
+                                />
+                            }
+                            {
+                                isFollowedUsersModalOpen && !isFollowerModalOpen && !isSettingsModalOpen && props.UserStore.user &&
+                                <FollowModal
+                                    modalType='followedUsers'
+                                    header='Takip edilenler'
+                                    onClose={closeFollowedUsersModal}
+                                    followedUsers={followedUsers && followedUsers}
+                                    currentUser={props.UserStore.user}
+                                />
+                            }
+                        </div>
                         <div className='user-detail-content-container'>
                             <div className='user-detail-content-wrapper'>
                                 {
@@ -159,8 +205,14 @@ const UserDetails = inject("UserStore")(observer((props) => {
                                             <h1>{user.name}</h1>
                                             <h4>@{user.username}</h4>
                                             <div className='user-detail-followers-row'>
-                                                <p>{`${followerCount}`} <br /> Takipçi</p>
-                                                <p>{`${followedUsers.length}`}<br />Takip Edilen</p>
+                                                <p
+                                                    className='user-detail-followers-button'
+                                                    onClick={() => { setIsFollowerModalOpen(true) }}
+                                                >{`${followerCount}`} <br /> Takipçi</p>
+                                                <p
+                                                    className='user-detail-followers-button'
+                                                    onClick={() => { setIsFollowedUsersModalOpen(true) }}
+                                                >{`${followedUsers.length}`}<br />Takip Edilen</p>
                                             </div>
                                             {/* <p>DD.MM.YYYY Tarihinde Katıldı</p> */}
                                         </div>
@@ -175,6 +227,7 @@ const UserDetails = inject("UserStore")(observer((props) => {
                                             <p style={{ color: 'white', fontWeight: '600' }}>{isFollowing != null && isFollowing ? `Takibi Bırak` : "Takip Et"}</p>
                                         </Button> :
                                             <IconButton
+                                                onClick={() => {setIsSettingsModalOpen(true)}}
                                                 children={<Settings />}
                                             />
                                         }
@@ -242,11 +295,11 @@ const UserDetails = inject("UserStore")(observer((props) => {
                                 }
                             </div>
                         </div>
-                        {
+                        {/* {
                             //kullanıcının takip ettiği kişiler... takip edilen kısmı yani
                             followedUsers && followedUsers.map(user =>
                                 (user.name) )
-                        }
+                        } */}
                     </div>
                 </div>
             </div>

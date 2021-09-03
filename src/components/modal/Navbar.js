@@ -16,7 +16,7 @@ const Navbar = inject("UserStore")(observer((props) => {
 
     return (
         <nav className="navbar">
-            <h1>BLOG Website</h1>
+            <h1>BLOGLA</h1>
             <div className="links">
                 <Link to="/">Ana Sayfa</Link>
                 {props.UserStore.user && <Link to={`/user/${props.UserStore.user.username}`}>Profil</Link>}

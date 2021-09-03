@@ -63,8 +63,16 @@
 }
 
 .editor-container{
+  margin-top: 20px;
   display: flex;
   flex-direction: row;
   overflow: none;
   justify-content: center;
+}
+
+.rdw-editor-wrapper{
+  max-height: 400px;
+  height: max-content;
+  overflow: scroll;
+  width: 90vw;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
 import useFetch from '../helpers/useFetch';
 import AuthService from "../services/AuthService";
@@ -9,12 +9,13 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import BlogService from '../services/BlogService';
 import RouteConstants from '../core/constants/route/RouteConstants';
 import { Button } from '@material-ui/core';
-import { Settings } from '@material-ui/icons';
+import { CloudUpload, Done, Edit, Settings } from '@material-ui/icons';
 import IconButton from 'material-ui/IconButton';
 import UserService from '../services/UserService';
 import FollowModal from '../components/modal/FollowModal'
 import SettingsModal from '../components/modal/SettingsModal'
 
+//Detay sayfasıyla profili ayırabilirdik..
 //Bu kişinin parolası gelmemesi gerekiyor kullanıcı detayları için başka bir sorgu yapabiliriz
 const UserDetails = inject("UserStore")(observer((props) => {
     const history = useHistory();
@@ -33,6 +34,11 @@ const UserDetails = inject("UserStore")(observer((props) => {
     const [isFollowing, setIsFollowing] = useState(null);
     const [followedUsers, setFollowedUsers] = useState(null);
     const [followerCount, setFollowerCount] = useState(0);
+    const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+    const [file, setFile] = useState('');
+    const [isEditModeOpen, setIsEditModeOpen] = useState(false);
+    const inputFile = useRef(null)
+
 
     const GoToBlog = (blogID) => {
         console.log(history)
@@ -66,12 +72,16 @@ const UserDetails = inject("UserStore")(observer((props) => {
                         var count = followerCount - 1;
                         setFollowerCount(count)
                         setIsFollowing(false);
+                        user.followers.pop({ follower: follower });
 
                     } else if (res == '200') {
                         console.log("Takibe başladık bu kişiyi")
                         var count = followerCount + 1;
                         setFollowerCount(count)
                         setIsFollowing(true);
+                        if (user) {
+                            user.followers.push({ follower: follower });
+                        }
                     }
                 } else {
                     //giriş yapması falan gerekiyor işte buraları ona göre ayarlayalım
@@ -120,8 +130,17 @@ const UserDetails = inject("UserStore")(observer((props) => {
             setIsBookmarkedBlogsPending(false);
         })
     }
+    const convertBlobToBase64 = (blob) => new Promise((resolve, reject) => {
+        const reader = new FileReader;
+        reader.onerror = reject;
+        reader.onload = () => {
+            resolve(reader.result);
+        };
+        reader.readAsDataURL(blob);
+    });
 
     useEffect(() => {
+        setIsMyProfile(null);
         setIsFollowerModalOpen(false);
         setIsFollowedUsersModalOpen(false);
         setIsSettingsModalOpen(false);
@@ -133,20 +152,17 @@ const UserDetails = inject("UserStore")(observer((props) => {
                     setUser(userRes);
                     if (userRes._id == props.UserStore.user._id) {
                         setIsMyProfile(true)
-                        console.log("BENİM PROFİLİM")
                     }
                     else {
                         setIsMyProfile(false)
-                        console.log("BAŞKASININ PROFİLİ")
                     }
-                    if (!isMyProfile) {
-                        setIsFollowing(false);
-                        userRes.followers.forEach(follower => {
-                            if (follower.follower._id == props.UserStore.user._id) {
-                                setIsFollowing(true);
-                            }
-                        })
-                    }
+                    setIsFollowing(false);
+                    userRes.followers.forEach(follower => {
+                        if (follower.follower._id == props.UserStore.user._id) {
+                            setIsFollowing(true);
+                        }
+                    })
+
                     getLikedBlogs(userRes._id);
                     getBookmarkedBlogs(userRes._id);
                     setFollowerCount(userRes.followers.length)
@@ -162,6 +178,55 @@ const UserDetails = inject("UserStore")(observer((props) => {
     }, [username]);
     // const history = useHistory();
 
+    const photoUpload = (e) => {
+        e.preventDefault();
+        const reader = new FileReader();
+        const fileInput = e.target.files[0];
+        reader.onloadend = async () => {
+            var base64data = reader.result;
+            // const base64response = await fetch(base64data);
+            // const blob = await base64response.blob();
+            var blob = await (await fetch(base64data)).blob()
+            console.log(blob)
+            //bir url oluşturuyor bu urlden gelen resmi convertblob ile aşağıdaki gibi dönüştürmek gerekiyor
+            const objectURL = URL.createObjectURL(blob)
+
+            console.log(objectURL)
+
+            fetch('https://i.picsum.photos/id/347/536/354.jpg?hmac=LtK3Z7XjfiSbOniKbiUdtytDjANujdfGOplCnATu0NM').then(
+                async (res) => {
+                    console.log("BURAYA GİRDİK")
+                    var blobres = await res.blob()
+                    const base64String = await convertBlobToBase64(blobres);
+                    //buradan dönen veri 
+                    console.log(base64String)
+                     setImagePreviewUrl(base64String);
+
+                }
+            )
+            // const base64String = await convertBlobToBase64(blob);
+            setFile(file)
+            //   this.setState({
+            //     file: file,
+            //     imagePreviewUrl: reader.result
+            //   });
+        }
+        reader.readAsDataURL(fileInput);
+    }
+
+    const ImgUpload = ({
+        onChange,
+        src,
+    }) => {
+        return (
+            <label for="photo-upload" className="custom-file-upload fas">
+                <div className="img-wrap img-upload" >
+                    <img for="photo-upload" src={src} />
+                </div>
+                <input id="photo-upload" type="file" onChange={onChange} />
+            </label>
+        );
+    }
 
     return (
         <MuiThemeProvider>
@@ -172,7 +237,7 @@ const UserDetails = inject("UserStore")(observer((props) => {
                             {
                                 isSettingsModalOpen && !isFollowedUsersModalOpen && !isFollowerModalOpen && props.UserStore.user &&
                                 <SettingsModal
-                                onClose={closeSettingsModal}
+                                    onClose={closeSettingsModal}
                                 />
                             }
                             {
@@ -199,24 +264,65 @@ const UserDetails = inject("UserStore")(observer((props) => {
                         <div className='user-detail-content-container'>
                             <div className='user-detail-content-wrapper'>
                                 {
-                                    user && followedUsers && <div className='user-detail-content-body'>
-                                        <img className='user-detail-profile-photo' src={user.profilePhotoUrl} />
-                                        <div className='user-detail-name-container'>
-                                            <h1>{user.name}</h1>
-                                            <h4>@{user.username}</h4>
-                                            <div className='user-detail-followers-row'>
-                                                <p
-                                                    className='user-detail-followers-button'
-                                                    onClick={() => { setIsFollowerModalOpen(true) }}
-                                                >{`${followerCount}`} <br /> Takipçi</p>
-                                                <p
-                                                    className='user-detail-followers-button'
-                                                    onClick={() => { setIsFollowedUsersModalOpen(true) }}
-                                                >{`${followedUsers.length}`}<br />Takip Edilen</p>
+                                    user && followedUsers &&
+                                    (!isEditModeOpen ?
+                                        <div className='user-detail-content-body'>
+                                            <div className={`user-detail-profile-photo-container`}>
+                                                <img className='user-detail-profile-photo' src={user.profilePhotoUrl} />
+                                                <div className="user-detail-profile-photo-overlay">
+                                                    <CloudUpload className="user-detail-profile-photo-upload-icon"></CloudUpload>
+                                                </div>
                                             </div>
-                                            {/* <p>DD.MM.YYYY Tarihinde Katıldı</p> */}
-                                        </div>
-                                    </div>
+                                            <div className='user-detail-name-container'>
+                                                <h1>{user.name}</h1>
+                                                <h4>@{user.username}</h4>
+                                                <div className='user-detail-followers-row'>
+                                                    <p
+                                                        className='user-detail-followers-button'
+                                                        onClick={() => { setIsFollowerModalOpen(true) }}
+                                                    >{`${followerCount}`} <br /> Takipçi</p>
+                                                    <p
+                                                        className='user-detail-followers-button'
+                                                        onClick={() => { setIsFollowedUsersModalOpen(true) }}
+                                                    >{`${followedUsers.length}`}<br />Takip Edilen</p>
+                                                </div>
+                                                {/* <p>DD.MM.YYYY Tarihinde Katıldı</p> */}
+                                            </div>
+                                        </div> :
+                                        //edit modu
+                                        <div className='user-detail-content-body'>
+                                            <label for="photo-upload">
+                                                <div
+                                                    className={`user-detail-profile-photo-container-edit`}
+                                                    onClick={() => {
+                                                        inputFile.current.click();
+                                                    }}
+                                                >
+                                                    <img className='user-detail-profile-photo' src={imagePreviewUrl ?? user.profilePhotoUrl} />
+                                                    <div className="user-detail-profile-photo-overlay">
+                                                        <CloudUpload className="user-detail-profile-photo-upload-icon"></CloudUpload>
+                                                        <input type="file" id="file" ref={inputFile} style={{ display: "none" }}
+                                                            onChange={(e) => { photoUpload(e) }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <div className='user-detail-name-container'>
+                                                <h1>{user.name}</h1>
+                                                <h4>@{user.username}</h4>
+                                                <div className='user-detail-followers-row'>
+                                                    <p
+                                                        className='user-detail-followers-button'
+                                                        onClick={() => { setIsFollowerModalOpen(true) }}
+                                                    >{`${followerCount}`} <br /> Takipçi</p>
+                                                    <p
+                                                        className='user-detail-followers-button'
+                                                        onClick={() => { setIsFollowedUsersModalOpen(true) }}
+                                                    >{`${followedUsers.length}`}<br />Takip Edilen</p>
+                                                </div>
+                                                {/* <p>DD.MM.YYYY Tarihinde Katıldı</p> */}
+                                            </div>
+                                        </div>)
                                 }
 
                                 {isMyProfile != null &&
@@ -226,15 +332,22 @@ const UserDetails = inject("UserStore")(observer((props) => {
                                         >
                                             <p style={{ color: 'white', fontWeight: '600' }}>{isFollowing != null && isFollowing ? `Takibi Bırak` : "Takip Et"}</p>
                                         </Button> :
-                                            <IconButton
-                                                onClick={() => {setIsSettingsModalOpen(true)}}
-                                                children={<Settings />}
-                                            />
+                                            <div>
+                                                <IconButton
+                                                    onClick={() => setIsEditModeOpen(!isEditModeOpen)}
+                                                    children={isEditModeOpen ? <Done /> : <Edit />}
+                                                />
+                                                <IconButton
+                                                    onClick={() => { setIsSettingsModalOpen(true) }}
+                                                    children={<Settings />}
+                                                />
+                                            </div>
                                         }
                                     </div>
                                 }
                             </div>
                         </div>
+                        {/* <ImgUpload onChange={(e)=> photoUpload(e)} src={imagePreviewUrl}/> */}
 
                         <div className='user-detail-liked-blogs-wrapper'>
                             <h3 style={{ marginBottom: '10px' }}>Beğenilen Bloglar</h3>

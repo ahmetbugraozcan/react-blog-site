@@ -249,11 +249,11 @@ const BlogDetails = inject("UserStore")(observer((props) => {
                                     {blog.comments.length > 0 && blog.comments.map(comment => (
                                         <div key={`${comment._id}`} className='blog-comment-row'>
                                             <div>
-                                                <img className='blog-detail-avatar' src={`${props.UserStore.user.profilePhotoUrl}`}></img>
+                                                <img className='blog-detail-avatar' src={`${comment.commenter.profilePhotoUrl}`}></img>
                                             </div>
                                             <div className='comment-content-wrapper'>
                                                 <div className='comment-header-row'>
-                                                    <Link to={`../user/${blog.author._id}`}>
+                                                    <Link to={`../user/${comment.commenter.username}`}>
                                                         <h4 className='blog-detail-commenter-name'>{comment.commenter.name}</h4>
                                                     </Link>
                                                     <h5 style={{ color: 'gray' }}>{convertDateToReadableString(comment.date)}</h5>

@@ -14,7 +14,6 @@
     position: relative;
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
 }
 
 .user-detail-content-wrapper {
@@ -52,16 +51,58 @@
     width: 100%;
 }
 
-
 .user-detail-content-container {
     justify-content: center;
     display: flex;
 }
 
-.user-detail-profile-photo {
-    border-radius: 50%;
+.user-detail-profile-photo-container, .user-detail-profile-photo-container-edit {
+    position: relative;
     width: 120px;
     height: 120px;
+    border: 1px solid black;
+    border-radius: 50%;
+
+}
+
+.user-detail-profile-photo {
+    object-fit: cover;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.user-detail-profile-photo-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    opacity: 0;
+    transition: .3s ease;
+    background-color: white;
+}
+
+.user-detail-profile-photo-container-edit:hover .user-detail-profile-photo-overlay {
+    opacity: 1;
+}
+
+.user-detail-profile-photo-upload-icon {
+    font-size: 80px !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+
+.user-detail-profile-photo-container-edit:hover {
+    cursor: pointer;
 }
 
 .user-detail-name-container {
@@ -73,6 +114,9 @@
 
 .user-detail-content-body {
     transform: translateY(-12%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .user-detail-followers-row {
@@ -82,6 +126,7 @@
     width: 100%;
     margin-top: 10px;
 }
+
 /* .user-detail-liked-blogs>::-webkit-scrollbar-thumb{
     background: red;
 } */
@@ -102,11 +147,12 @@
     margin-bottom: 10px;
 }
 
-.user-detail-liked-blog-card:hover{
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+.user-detail-liked-blog-card:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transform: scale(0.98);
 }
- .user-detail-liked-blog-card {
+
+.user-detail-liked-blog-card {
     background-color: white;
     margin-left: 10px;
     margin: 1%;
@@ -182,4 +228,3 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transform: translateY(-6px);
 } */
-

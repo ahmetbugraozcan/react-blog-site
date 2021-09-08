@@ -36,6 +36,7 @@
 
 .follow-modal-user-card-avatar {
     vertical-align: middle;
+    object-fit: cover;
     width: 60px;
     height: 60px;
     border-radius: 50%;

@@ -60,9 +60,8 @@
     position: relative;
     width: 120px;
     height: 120px;
-    border: 1px solid black;
+    border: 2px solid rgb(128, 116, 116);
     border-radius: 50%;
-
 }
 
 .user-detail-profile-photo {
@@ -98,14 +97,14 @@
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     text-align: center;
-  }
-  
+}
 
 .user-detail-profile-photo-container-edit:hover {
     cursor: pointer;
 }
 
 .user-detail-name-container {
+    min-width: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -145,6 +144,12 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 10px;
+}
+
+.user-details-button {
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    cursor: pointer;
 }
 
 .user-detail-liked-blog-card:hover {
@@ -222,6 +227,19 @@
 .user-detail-followers-button:hover {
     text-decoration: underline;
     cursor: pointer;
+}
+
+.user-detail-edit-mode-input {
+    border-radius: 6px;
+    padding: 5px;
+    border: 1px solid gray;
+}
+
+.user-detail-edit-mode-label {
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    align-self: start;
 }
 
 /*.user-detail-liked-blog-card:hover{

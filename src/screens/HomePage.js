@@ -91,10 +91,7 @@ class HomePage extends React.Component {
                                             </div>
                                             <div className='blog-footer'>
                                                 <div className='blog-footer-icon-container'>
-                                                    <div className='blog-icon-row'>
-                                                        <img className='blog-icon' src="https://image.flaticon.com/icons/png/512/709/709612.png" alt="view-icon" />
-                                                        <div className='blog-icon-row-text'>{blog.numberOfView}</div>
-                                                    </div>
+
                                                     <div className='blog-icon-row'>
                                                         <img className='blog-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />
                                                         {/* {<img onClick={() => { likeBlog(blog._id) }} className='like-icon' src={blog.isLiked ? heart : emptyheart} alt="like-icon" />} */}

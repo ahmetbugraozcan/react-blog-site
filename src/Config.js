@@ -1,10 +1,16 @@
+
+import { inject, observer } from "mobx-react";
+
+@inject("LanguageStore")
+@observer
 class Config {
-    constructor() {
+    constructor(props) {
+        super(props)
         this.default();
     }
 
     default() {
-        this.LANG = 'tr-TR';
+        this.LANG = this.props.LanguageStore.language;
     }
 
 }

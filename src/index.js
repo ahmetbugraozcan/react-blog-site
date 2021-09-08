@@ -14,9 +14,11 @@ import { Provider } from "mobx-react";
 // import { observer, inject} from 'mobx-react';
 
 import UserStore from './helpers/UserStore';
+import LanguageStore from './helpers/LanguageStore';
 
 const stores = {
-  UserStore
+  UserStore,
+  LanguageStore
 };
 
 

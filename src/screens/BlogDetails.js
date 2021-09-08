@@ -191,10 +191,6 @@ const BlogDetails = inject("UserStore")(observer((props) => {
                             <h2 className='blog-detail-name'>{`${blog.author.name}`}</h2>
                             <h4 className='blog-detail-username'>{`@${blog.author.username}`}</h4>
                         </div>
-                        {
-                            blog.author._id !== props.UserStore.user._id &&
-                                <Button style={{ marginTop: "10px" }}>Takip Et</Button>
-                        }
                         {/* <div className='sticky-user-card-column'>
                             <h3>{`Yazar`}</h3>
                             <div>{`${blog.author.username}`}</div>

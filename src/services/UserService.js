@@ -8,7 +8,7 @@ class UserService {
             headers: {
                 "Content-Type": "application/json",
             },
-            body:JSON.stringify({
+            body: JSON.stringify({
                 follower: follower,
                 followedUserName: username,
             }),
@@ -28,9 +28,9 @@ class UserService {
             console.log("LİKE CATCH ", err)
             return false;
         });
-     }
+    }
 
-     getFollowedUsers(username) {
+    getFollowedUsers(username) {
         return fetch(ServiceConstants.BASEURL + ServiceConstants.USER + `/${username}` + ServiceConstants.FOLLOWEDUSERS, {
             method: ServiceConstants.GET,
         }).then((res) => {
@@ -45,9 +45,79 @@ class UserService {
             console.log("getFollowedUsers ERROR ", err)
             return null
         });
-     }
+    }
 
-     getFollowingUsers(username) {
+    updateProfilePhoto(image, id) {
+        // var photoBody = { photo: image };
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.UPLOADS + `/${id}`, {
+            method: ServiceConstants.POST,
+            body: image
+        }).then(res => {
+            if (res.ok) {
+                console.log("UPLOAD BAŞARILI");
+                return res.text();
+            }
+            else {
+                console.log("Upload sırasında hata oluştu.")
+                return false;
+            }
+        })
+    }
+
+    updateUserName(username, id) {
+        // var photoBody = { photo: image };
+        var usernameBody = { username: username };
+        console.log(usernameBody)
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.USER + `/${id}` + ServiceConstants.UPDATE + ServiceConstants.USERNAME, {
+            method: ServiceConstants.POST,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(
+                {
+                    username: username
+                }
+            )
+        }).then(res => {
+            if (res.ok) {
+                console.log("USERNAME UPDATE BAŞARILI");
+                return username;
+            }
+            else {
+                console.log("USERNAME UPDATE SIRASINDA HATA.")
+                return false;
+            }
+        })
+    }
+
+    updateName(name, id) {
+        // var photoBody = { photo: image };
+        var usernameBody = { name: name };
+        console.log(usernameBody)
+        return fetch(ServiceConstants.BASEURL + ServiceConstants.USER + `/${id}` + ServiceConstants.UPDATE + ServiceConstants.NAME, {
+            method: ServiceConstants.POST,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(
+                {
+                    name: name
+                }
+            )
+        }).then(res => {
+            if (res.ok) {
+                console.log("USERNAME UPDATE BAŞARILI");
+                //responsedan gelse daha iyi
+                return name;
+            }
+            else {
+                console.log("USERNAME UPDATE SIRASINDA HATA.")
+                return false;
+            }
+        })
+    }
+
+    getFollowingUsers(username) {
         return fetch(ServiceConstants.BASEURL + ServiceConstants.USER + `/${username}` + ServiceConstants.FOLLOWERS, {
             method: ServiceConstants.GET,
         }).then((res) => {
@@ -62,9 +132,9 @@ class UserService {
             console.log("getFollowedUsers ERROR ", err)
             return null
         });
-     }
+    }
 
- 
+
 }
 export default new UserService();
 

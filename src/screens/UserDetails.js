@@ -37,6 +37,8 @@ const UserDetails = inject("UserStore")(observer((props) => {
     const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
     const [file, setFile] = useState('');
     const [isEditModeOpen, setIsEditModeOpen] = useState(false);
+    const [usernameField, setUsernameField] = useState('')
+    const [nameField, setNameField] = useState('')
     const inputFile = useRef(null)
 
 
@@ -144,14 +146,16 @@ const UserDetails = inject("UserStore")(observer((props) => {
         setIsFollowerModalOpen(false);
         setIsFollowedUsersModalOpen(false);
         setIsSettingsModalOpen(false);
+        setIsPending(true)
         AuthService.getUser(username).then((res) => {
             {
-                setIsPending(true)
                 if (res) {
                     var userRes = JSON.parse(res);
                     setUser(userRes);
                     if (userRes._id == props.UserStore.user._id) {
                         setIsMyProfile(true)
+                        setUsernameField(userRes.username)
+                        setNameField(userRes.name)
                     }
                     else {
                         setIsMyProfile(false)
@@ -178,61 +182,127 @@ const UserDetails = inject("UserStore")(observer((props) => {
     }, [username]);
     // const history = useHistory();
 
+    //bu işlem dbye kaydetmek için 
+    //     axios.post("http://localhost:8000/image", data, { // receive two parameter endpoint url ,form data 
+    // })
+    // .then(res => { // then print response status
+    //   console.log(res.statusText)
+    // })
+    const updateProfilePhoto = async (e) => {
+        e.preventDefault();
+
+        if (file) {
+            let formData = new FormData();
+            formData.append("photo", file);
+            await UserService.updateProfilePhoto(formData, props.UserStore.user._id).then(res => {
+                if (res) {
+                    // props.UserStore.user.profilePhotoUrl = res;
+                    var tempUser = { ...user, profilePhotoUrl: JSON.parse(res).profilePhotoUrl };
+                    setUser(tempUser)
+                    props.UserStore.setUser(tempUser);
+                    setFile(null)
+                    // console.log(user.profilePhotoUrl)
+                }
+                else {
+                }
+            })
+        }
+    }
+
+    const updateUserName = async (e) => {
+        e.preventDefault();
+
+        if (props.UserStore.user.username != usernameField) {
+            await UserService.updateUserName(usernameField, props.UserStore.user._id).then(res => {
+                if (res) {
+                    console.log("RESPONSE : ", res);
+                    // props.UserStore.user.profilePhotoUrl = res;
+                    var tempUser = {...user, username: res};
+                    setUser(tempUser)
+                    props.UserStore.setUser(tempUser);
+                    setFile(null)
+                    // console.log(user.profilePhotoUrl)
+                }
+                else {
+                }
+            })
+        }
+        else {
+            console.log("Kullanıcı adları aynı değişmedi")
+        }
+    }
+
+    const updateName = async (e) => {
+        e.preventDefault();
+        console.log("props before : ", props.UserStore.user.name)
+
+        if (props.UserStore.user.name != nameField) {
+            await UserService.updateName(nameField, props.UserStore.user._id).then(res => {
+                if (res) {
+                    var tempUser = {...user ,name :res};
+                    setUser(tempUser)
+                    // props.UserStore.user.name = res;
+                    props.UserStore.setUser(tempUser);
+                    setFile(null)
+                    // console.log(user.profilePhotoUrl)
+                }
+                else {
+                }
+            })
+        }
+        else {
+            console.log("İsim aynı değişmedi")
+        }
+    }
+
     const photoUpload = (e) => {
         e.preventDefault();
         const reader = new FileReader();
         const fileInput = e.target.files[0];
+        setFile(fileInput)
+
+
+        reader.readAsDataURL(fileInput);
         reader.onloadend = async () => {
             var base64data = reader.result;
-            // const base64response = await fetch(base64data);
-            // const blob = await base64response.blob();
             var blob = await (await fetch(base64data)).blob()
-            console.log(blob)
-            //bir url oluşturuyor bu urlden gelen resmi convertblob ile aşağıdaki gibi dönüştürmek gerekiyor
             const objectURL = URL.createObjectURL(blob)
+            // console.log(blob)
 
-            console.log(objectURL)
-
-            fetch('https://i.picsum.photos/id/347/536/354.jpg?hmac=LtK3Z7XjfiSbOniKbiUdtytDjANujdfGOplCnATu0NM').then(
+            // UserService.uploadProfilePhoto(blob, props.UserStore.user._id)
+            //bu işlem preview için
+            fetch(objectURL).then(
                 async (res) => {
-                    console.log("BURAYA GİRDİK")
                     var blobres = await res.blob()
                     const base64String = await convertBlobToBase64(blobres);
-                    //buradan dönen veri 
-                    console.log(base64String)
-                     setImagePreviewUrl(base64String);
-
+                    setImagePreviewUrl(base64String);
+                    // console.log(blobres)
+                    //deneme
                 }
-            )
-            // const base64String = await convertBlobToBase64(blob);
-            setFile(file)
-            //   this.setState({
-            //     file: file,
-            //     imagePreviewUrl: reader.result
-            //   });
+            );
+
         }
-        reader.readAsDataURL(fileInput);
     }
 
-    const ImgUpload = ({
-        onChange,
-        src,
-    }) => {
-        return (
-            <label for="photo-upload" className="custom-file-upload fas">
-                <div className="img-wrap img-upload" >
-                    <img for="photo-upload" src={src} />
-                </div>
-                <input id="photo-upload" type="file" onChange={onChange} />
-            </label>
-        );
-    }
+    // const ImgUpload = ({
+    //     onChange,
+    //     src,
+    // }) => {
+    //     return (
+    //         <label for="photo-upload" className="custom-file-upload fas">
+    //             <div className="img-wrap img-upload" >
+    //                 <img for="photo-upload" src={src} />
+    //             </div>
+    //             <input id="photo-upload" type="file" onChange={onChange} />
+    //         </label>
+    //     );
+    // }
 
     return (
         <MuiThemeProvider>
             <div className='user-details-page-background'>
                 <div className='user-details-page-content-wrapper'>
-                    <div className='user-detail-page-body-wrapper'>
+                    {user ? <div className='user-detail-page-body-wrapper'>
                         <div>
                             {
                                 isSettingsModalOpen && !isFollowedUsersModalOpen && !isFollowerModalOpen && props.UserStore.user &&
@@ -274,8 +344,8 @@ const UserDetails = inject("UserStore")(observer((props) => {
                                                 </div>
                                             </div>
                                             <div className='user-detail-name-container'>
-                                                <h1>{user.name}</h1>
-                                                <h4>@{user.username}</h4>
+                                                <h1>{user.name.substring(0, 20)}</h1>
+                                                <h4>@{user.username.substring(0, 20)}</h4>
                                                 <div className='user-detail-followers-row'>
                                                     <p
                                                         className='user-detail-followers-button'
@@ -289,28 +359,42 @@ const UserDetails = inject("UserStore")(observer((props) => {
                                                 {/* <p>DD.MM.YYYY Tarihinde Katıldı</p> */}
                                             </div>
                                         </div> :
-                                        //edit modu
-                                        <div className='user-detail-content-body'>
-                                            <label for="photo-upload">
-                                                <div
-                                                    className={`user-detail-profile-photo-container-edit`}
-                                                    onClick={() => {
-                                                        inputFile.current.click();
-                                                    }}
-                                                >
-                                                    <img className='user-detail-profile-photo' src={imagePreviewUrl ?? user.profilePhotoUrl} />
-                                                    <div className="user-detail-profile-photo-overlay">
-                                                        <CloudUpload className="user-detail-profile-photo-upload-icon"></CloudUpload>
-                                                        <input type="file" id="file" ref={inputFile} style={{ display: "none" }}
-                                                            onChange={(e) => { photoUpload(e) }}
-                                                        />
+                                        //EDIT MODU
+                                        <form id="my-form" onSubmit={async (e) => {
+                                            //updateusername
+                                            //updatename
+                                            e.preventDefault();
+                                            await updateProfilePhoto(e);
+                                            await updateUserName(e);
+                                            await updateName(e);
+                                            setIsEditModeOpen(!isEditModeOpen);
+                                            //submit method
+                                        }}>
+                                            <div className='user-detail-content-body'>
+                                                <label htmlFor="photo-upload">
+                                                    <div
+                                                        className={`user-detail-profile-photo-container-edit`}
+                                                        onClick={() => {
+                                                            inputFile.current.click();
+                                                        }}
+                                                    >
+                                                        <img className='user-detail-profile-photo' src={imagePreviewUrl ?? user.profilePhotoUrl} />
+                                                        <div className="user-detail-profile-photo-overlay">
+                                                            <CloudUpload className="user-detail-profile-photo-upload-icon"></CloudUpload>
+                                                            <input type="file" id="file" ref={inputFile} style={{ display: "none" }}
+                                                                onChange={(e) => { photoUpload(e) }}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </label>
-                                            <div className='user-detail-name-container'>
-                                                <h1>{user.name}</h1>
-                                                <h4>@{user.username}</h4>
-                                                <div className='user-detail-followers-row'>
+                                                </label>
+                                                <div className='user-detail-name-container'>
+                                                    <label className='user-detail-edit-mode-label' htmlFor='name'>Kullanıcı Ad-Soyad</label>
+                                                    <input className='user-detail-edit-mode-input' value={nameField} onChange={(e) => { setNameField(e.target.value) }} id='name' />
+                                                    <label className='user-detail-edit-mode-label' htmlFor='username'>Kullanıcı Adı</label>
+                                                    <input className='user-detail-edit-mode-input' value={usernameField} onChange={(e) => { setUsernameField(e.target.value) }} id='username' />
+                                                    {/* <h1>{user.name}</h1>
+                                                    <h4>@{user.username}</h4> */}
+                                                    {/* <div className='user-detail-followers-row'>
                                                     <p
                                                         className='user-detail-followers-button'
                                                         onClick={() => { setIsFollowerModalOpen(true) }}
@@ -319,12 +403,13 @@ const UserDetails = inject("UserStore")(observer((props) => {
                                                         className='user-detail-followers-button'
                                                         onClick={() => { setIsFollowedUsersModalOpen(true) }}
                                                     >{`${followedUsers.length}`}<br />Takip Edilen</p>
+                                                </div> */}
+                                                    {/* <p>DD.MM.YYYY Tarihinde Katıldı</p> */}
                                                 </div>
-                                                {/* <p>DD.MM.YYYY Tarihinde Katıldı</p> */}
                                             </div>
-                                        </div>)
+                                        </form>
+                                    )
                                 }
-
                                 {isMyProfile != null &&
                                     <div className='user-detail-top-right-corner'>
                                         {isMyProfile == false ? <Button className='user-detail-top-right-corner-button'
@@ -333,14 +418,45 @@ const UserDetails = inject("UserStore")(observer((props) => {
                                             <p style={{ color: 'white', fontWeight: '600' }}>{isFollowing != null && isFollowing ? `Takibi Bırak` : "Takip Et"}</p>
                                         </Button> :
                                             <div>
-                                                <IconButton
-                                                    onClick={() => setIsEditModeOpen(!isEditModeOpen)}
-                                                    children={isEditModeOpen ? <Done /> : <Edit />}
-                                                />
+                                                {isEditModeOpen ?
+                                                    <button
+                                                        type='submit'
+                                                        form='my-form'
+                                                        className='user-details-button'
+                                                    >
+                                                        <Done />
+                                                    </button>
+                                                    // <IconButton
+                                                    //     // onClick={() => setIsEditModeOpen(!isEditModeOpen)}
+                                                    //     type='submit'
+                                                    //     form='my-form'
+                                                    //     children={
+                                                    //         <Done />}
+                                                    // />
+                                                    // <Button
+                                                    //     type="submit"
+                                                    //     form="my-form"
+                                                    //     onClick={(e) => {
+
+                                                    //     }}
+
+                                                    // >
+                                                    //     Click me 
+                                                    // </Button>
+                                                    :
+                                                    <IconButton
+                                                        type='button'
+                                                        onClick={() => setIsEditModeOpen(!isEditModeOpen)}
+                                                        children={
+                                                            <Edit />}
+                                                    />
+
+                                                }
                                                 <IconButton
                                                     onClick={() => { setIsSettingsModalOpen(true) }}
                                                     children={<Settings />}
                                                 />
+
                                             </div>
                                         }
                                     </div>
@@ -413,7 +529,7 @@ const UserDetails = inject("UserStore")(observer((props) => {
                             followedUsers && followedUsers.map(user =>
                                 (user.name) )
                         } */}
-                    </div>
+                    </div> : isPending ? <div>Yükleniyor</div> : <div>KULLANICI BULUNAMADI</div>}
                 </div>
             </div>
         </MuiThemeProvider>

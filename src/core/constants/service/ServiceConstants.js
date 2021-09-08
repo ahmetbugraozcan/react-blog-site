@@ -12,9 +12,13 @@ module.exports ={
     BOOKMARK: '/bookmark',    
     LIKEDPOSTS: '/likedPosts',
     BOOKMARKEDBLOGS:'/bookmarkedPosts',
+    NAME: '/name',
     USER: '/user',
+    USERNAME: '/username',
     FOLLOW: '/follow',
     FOLLOWERS: '/followers',
     FOLLOWEDUSERS: '/followedUsers',
+    UPLOADS: '/uploads',
+    UPDATE: '/update'
 
 }

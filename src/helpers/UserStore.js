@@ -9,6 +9,8 @@ export class UserStore {
     setUser(value) {
         // console.log("VALUE : " , value);
         this.user = value;
+        console.log(value);
+        localStorage.setItem("user", JSON.stringify(value));
     }
     setUsername(value) {
         this.user.username = value;
